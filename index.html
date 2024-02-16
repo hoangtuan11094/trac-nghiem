@@ -1,0 +1,956 @@
+<!-- Created By CodingNepal - www.codingnepalweb.com  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra | TCHC</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAweome CDN Link for Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+
+<style>
+    /* importing google fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body{
+        background: #007bff;
+    }
+
+    ::selection{
+        color: #fff;
+        background: #007bff;
+    }
+
+    .start_btn,
+    .info_box,
+    .quiz_box,
+    .result_box{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .start_btn_random{
+        position: absolute;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+    }
+
+    .info_box.activeInfo,
+    .quiz_box.activeQuiz,
+    .result_box.activeResult{
+        opacity: 1;
+        z-index: 5;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .start_btn button{
+        font-size: 16pt;
+        font-weight: 500;
+        color: #007bff;
+        padding: 15px 30px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .start_btn_random button{
+        font-size: 18pt;
+        font-weight: 500;
+        
+        color: #007bff;
+        padding: 15px 30px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .info_box{
+        width: 1250px;
+        background: #fff;
+        border-radius: 5px;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .info_box .info-title{
+        height: 60px;
+        width: 100%;
+        border-bottom: 1px solid lightgrey;
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        border-radius: 5px 5px 0 0;
+        font-size: 16pt;
+        font-weight: 600;
+    }
+
+    .info_box .info-list{
+        padding: 15px 30px;
+    }
+
+    .info_box .info-list .info{
+        margin: 5px 0;
+        font-size: 14pt;
+    }
+
+    .info_box .info-list .info span{
+        font-weight: 600;
+        color: #007bff;
+    }
+    .info_box .buttons{
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 30px;
+        border-top: 1px solid lightgrey;
+    }
+
+    .info_box .buttons button{
+        margin: 0 5px;
+        height: 40px;
+        width: 100px;
+        font-size: 16pt;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: all 0.3s ease;
+    }
+
+    .quiz_box{
+        width: 1250px;
+        background: #fff;
+        border-radius: 5px;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .quiz_box header{
+        position: relative;
+        z-index: 2;
+        height: 70px;
+        padding: 0 30px;
+        background: #fff;
+        border-radius: 5px 5px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.1);
+    }
+
+    .quiz_box header .title{
+        font-size: 16pt;
+        font-weight: 600;
+    }
+
+    .quiz_box header .timer{
+        color: #004085;
+        background: #cce5ff;
+        border: 1px solid #b8daff;
+        height: 45px;
+        padding: 0 8px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 145px;
+    }
+
+    .quiz_box header .timer .time_left_txt{
+        font-weight: 400;
+        font-size: pt;
+        user-select: none;
+    }
+
+    .quiz_box header .timer .timer_sec{
+        font-size: 14pt;
+        font-weight: 500;
+        height: 30px;
+        width: 45px;
+        color: #fff;
+        border-radius: 5px;
+        line-height: 30px;
+        text-align: center;
+        background: #343a40;
+        border: 1px solid #343a40;
+        user-select: none;
+    }
+
+    .quiz_box header .time_line{
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        height: 3px;
+        background: #007bff;
+    }
+
+    section{
+        padding: 25px 30px 20px 30px;
+        background: #fff;
+    }
+
+    section .que_text{
+        font-size: 16pt;
+        font-weight: 600;
+    }
+
+    section .option_list{
+        padding: 20px 0px;
+        display: block;
+    }
+
+    section .option_list .option{
+        background: aliceblue;
+
+        border: 1px solid #84c5fe;
+        border-radius: 5px;
+        padding: 8px 15px;
+        font-size: 13pt;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    section .option_list .option span{
+        width: 1133.66px;
+    }
+
+    section .option_list .option:last-child{
+        margin-bottom: 0px;
+    }
+
+    section .option_list .option:hover{
+        color: #004085;
+        background: #cce5ff;
+        border: 1px solid #b8daff;
+    }
+
+    section .option_list .option.correct{
+        color: #155724;
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+    }
+
+    section .option_list .option.incorrect{
+        color: #721c24;
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+    }
+
+    section .option_list .option.disabled{
+        pointer-events: none;
+    }
+
+    section .option_list .option .icon{
+        height: 26px;
+        width: 26px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 13px;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        line-height: 24px;
+    }
+    .option_list .option .icon.tick{
+        color: #23903c;
+        border-color: #23903c;
+        background: #d4edda;
+    }
+
+    .option_list .option .icon.cross{
+        color: #a42834;
+        background: #f8d7da;
+        border-color: #a42834;
+    }
+
+    footer{
+        height: 60px;
+        padding: 0 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid lightgrey;
+    }
+
+    footer .total_que span{
+        display: flex;
+        user-select: none;
+    }
+
+    footer .total_que span p{
+        font-weight: 500;
+        padding: 0 5px;
+    }
+
+    footer .total_que span p:first-child{
+        padding-left: 0px;
+    }
+
+    footer button{
+        height: 40px;
+        padding: 0 13px;
+        font-size: 16pt;
+        font-weight: 400;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        color: #fff;
+        border-radius: 5px;
+        background: #007bff;
+        border: 1px solid #007bff;
+        line-height: 10px;
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.95);
+        transition: all 0.3s ease;
+    }
+
+    footer button:hover{
+        background: #0263ca;
+    }
+
+    footer button.show{
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1);
+    }
+
+    .result_box{
+        background: #fff;
+        border-radius: 5px;
+        display: flex;
+        padding: 25px 30px;
+        width: 1250px;
+        height: 80%;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .result_box .icon{
+        font-size: 40pt;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .result_box .complete_text{
+        font-size: 14pt;
+        font-weight: 500;
+    }
+
+    .result_box .score_text span{
+        display: flex;
+        margin: 10px 0;
+        font-size: 14pt;
+        font-weight: 500;
+    }
+
+    .result_box .score_text span p{
+        padding: 0 4px;
+        font-weight: 600;
+    }
+
+    .result_box .buttons{
+        display: flex;
+        margin: 20px 0;
+    }
+
+    .result_box .buttons button{
+        margin: 0 10px;
+        height: 45px;
+        padding: 0 20px;
+        font-size: 16pt;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: all 0.3s ease;
+    }
+
+    .buttons button.restart{
+        color: #fff;
+        background: #007bff;
+    }
+
+    .buttons button.restart:hover{
+        background: #0263ca;
+    }
+
+    .buttons button.quit{
+        color: #007bff;
+        background: #fff;
+    }
+
+    .buttons button.quit:hover{
+        color: #fff;
+        background: #007bff;
+    }
+</style>
+<body>
+    <!-- start Quiz button -->
+<!--    <div disabled class="start_btn "><button>Ôn luyện 95 câu hỏi</button></div>-->
+    <div class="start_btn_random"><button>Tạo bộ đề 10 câu hỏi ngẫu nhiên</button></div>
+
+    <!-- Info Box -->
+    <div class="info_box">
+        <div class="info-title"><span>Thể lệ</span></div>
+        <div class="info-list">
+            <div class="info">- Đồng chí có <span>60 giây</span> để trả lời mỗi câu hỏi.</div>
+            <div class="info">- Đồng chí chỉ được chọn đáp án 1 lần duy nhất, không thể chọn lại.</div>
+            <div class="info">- Đồng chí không thể chọn đáp án khi đã hết thời gian.</div>
+            <div class="info">- Kết quả sẽ hiển thị sau khi bạn hoàn thành bài kiểm tra.</div>
+        </div>
+        <div class="buttons">
+            <button class="quit">Thoát</button>
+            <button class="restart">Bắt đầu</button>
+        </div>
+    </div>
+
+    <!-- Quiz Box -->
+    <div class="quiz_box">
+        <header>
+            <div class="title">Kiểm tra trắc nghiệm</div>
+            <div class="timer">
+                <div class="time_left_txt">Thời gian:</div>
+                <div class="timer_sec">15</div>
+            </div>
+            <div class="time_line"></div>
+        </header>
+        <section>
+            <div class="que_text">
+                <!-- Here I've inserted question from JavaScript -->
+            </div>
+            <div class="option_list">
+                <!-- Here I've inserted options from JavaScript -->
+            </div>
+        </section>
+
+        <!-- footer of Quiz Box -->
+        <footer>
+            <div class="total_que">
+                <!-- Here I've inserted Question Count Number from JavaScript -->
+            </div>
+            <button class="next_btn">Câu tiếp</button>
+        </footer>
+    </div>
+
+    <!-- Result Box -->
+    <div class="result_box">
+        <div class="icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        <div class="complete_text">Hoàn thành!</div>
+        <div class="score_text">
+            <!-- Here I've inserted Score Result from JavaScript -->
+        </div>
+        <div class="buttons">
+<!--            <button class="restart">Ôn lại</button>-->
+<!--            <button class="quit">Thoát</button>-->
+        </div>
+    </div>
+
+    <!-- Inside this JavaScript file I've inserted Questions and Options only -->
+
+
+    <!-- Inside this JavaScript file I've coded all Quiz Codes -->
+    <script >
+        //selecting all required elements
+        // const start_btn = document.querySelector(".start_btn button");
+        const start_btn_random = document.querySelector(".start_btn_random button");
+        const info_box = document.querySelector(".info_box");
+        const exit_btn = info_box.querySelector(".buttons .quit");
+        const continue_btn = info_box.querySelector(".buttons .restart");
+        const quiz_box = document.querySelector(".quiz_box");
+        const result_box = document.querySelector(".result_box");
+        const option_list = document.querySelector(".option_list");
+        const time_line = document.querySelector("header .time_line");
+        const timeText = document.querySelector(".timer .time_left_txt");
+        const timeCount = document.querySelector(".timer .timer_sec");
+
+        
+        // start_btn.onclick = ()=>{
+        //     genFullQuestion();
+        //     info_box.classList.add("activeInfo"); //show info box
+        // }
+
+        start_btn_random.onclick = ()=>{
+            genRandomQuestion();
+            info_box.classList.add("activeInfo"); //show info box
+        }
+
+        // if exitQuiz button clicked
+        exit_btn.onclick = ()=>{
+            info_box.classList.remove("activeInfo"); //hide info box
+        }
+
+        // if continueQuiz button clicked
+        continue_btn.onclick = ()=>{
+            info_box.classList.remove("activeInfo"); //hide info box
+            quiz_box.classList.add("activeQuiz"); //show quiz box
+            showQuetions(0); //calling showQestions function
+            queCounter(1); //passing 1 parameter to queCounter
+            startTimer(timeValue); //calling startTimer function
+            startTimerLine(0); //calling startTimerLine function
+        }
+
+        let timeValue =  60;
+        let que_count = 0;
+        let que_numb = 1;
+        let userScore = 0;
+        let counter;
+        let counterLine;
+        let widthValue = 0;
+
+        // const restart_quiz = result_box.querySelector(".buttons .restart");
+        // const quit_quiz = result_box.querySelector(".buttons .quit");
+        //
+        // // if restartQuiz button clicked
+        // restart_quiz.onclick = ()=>{
+        //     quiz_box.classList.add("activeQuiz"); //show quiz box
+        //     result_box.classList.remove("activeResult"); //hide result box
+        //     timeValue = 60;
+        //     que_count = 0;
+        //     que_numb = 1;
+        //     userScore = 0;
+        //     widthValue = 0;
+        //     showQuetions(que_count); //calling showQestions function
+        //     queCounter(que_numb); //passing que_numb value to queCounter
+        //     clearInterval(counter); //clear counter
+        //     clearInterval(counterLine); //clear counterLine
+        //     startTimer(timeValue); //calling startTimer function
+        //     startTimerLine(widthValue); //calling startTimerLine function
+        //     timeText.textContent = "Thời gian"; //change the text of timeText to Time Left
+        //     next_btn.classList.remove("show"); //hide the next button
+        // }
+        //
+        // // if quitQuiz button clicked
+        // quit_quiz.onclick = ()=>{
+        //     window.location.reload(); //reload the current window
+        // }
+
+        const next_btn = document.querySelector("footer .next_btn");
+        const bottom_ques_counter = document.querySelector("footer .total_que");
+
+        // if Next Que button clicked
+        next_btn.onclick = ()=>{
+            if(que_count < questions.length - 1){ //if question count is less than total question length
+                que_count++; //increment the que_count value
+                que_numb++; //increment the que_numb value
+                showQuetions(que_count); //calling showQestions function
+                queCounter(que_numb); //passing que_numb value to queCounter
+                clearInterval(counter); //clear counter
+                clearInterval(counterLine); //clear counterLine
+                startTimer(timeValue); //calling startTimer function
+                startTimerLine(widthValue); //calling startTimerLine function
+                timeText.textContent = "Thời gian"; //change the timeText to Time Left
+                next_btn.classList.remove("show"); //hide the next button
+            }else{
+                clearInterval(counter); //clear counter
+                clearInterval(counterLine); //clear counterLine
+                showResult(); //calling showResult function
+            }
+        }
+
+        // getting questions and options from array
+        function showQuetions(index){
+            const que_text = document.querySelector(".que_text");
+
+            //creating a new span and div tag for question and option and passing the value using array index
+            let que_tag = '<span>'+ que_numb + ". " + questions[index].question +'</span>';
+            let option_tag = '<div class="option"><span>'+ questions[index].options[0] +'</span></div>'
+                + '<div class="option"><span>'+ questions[index].options[1] +'</span></div>'
+                + '<div class="option"><span>'+ questions[index].options[2] +'</span></div>';
+            if(questions[index].options[3] != "" && questions[index].options[3]!= null) {
+                 option_tag = option_tag  + '<div class="option"><span>'+ questions[index].options[3] +'</span></div>';
+            }
+
+            que_text.innerHTML = que_tag; //adding new span tag inside que_tag
+            option_list.innerHTML = option_tag; //adding new div tag inside option_tag
+
+            const option = option_list.querySelectorAll(".option");
+
+            // set onclick attribute to all available options
+            for(i=0; i < option.length; i++){
+                option[i].setAttribute("onclick", "optionSelected(this)");
+            }
+        }
+        // creating the new div tags which for icons
+        let tickIconTag = '<div class="icon tick"><i class="fas fa-check"></i></div>';
+        let crossIconTag = '<div class="icon cross"><i class="fas fa-times"></i></div>';
+
+        //if user clicked on option
+        function optionSelected(answer){
+            clearInterval(counter); //clear counter
+            clearInterval(counterLine); //clear counterLine
+            let userAns = answer.textContent; //getting user selected option
+            let correcAns = questions[que_count].answer; //getting correct answer from array
+            const allOptions = option_list.children.length; //getting all option items
+
+            if(userAns == correcAns){ //if user selected option is equal to array's correct answer
+                userScore += 1; //upgrading score value with 1
+                answer.classList.add("correct"); //adding green color to correct selected option
+                answer.insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to correct selected option
+                console.log("Correct Answer");
+                console.log("Your correct answers = " + userScore);
+            }else{
+                answer.classList.add("incorrect"); //adding red color to correct selected option
+                answer.insertAdjacentHTML("beforeend", crossIconTag); //adding cross icon to correct selected option
+                console.log("Wrong Answer");
+
+                for(i=0; i < allOptions; i++){
+                    if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer
+                        option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
+                        option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
+                        console.log("Auto selected correct answer.");
+                    }
+                }
+            }
+            for(i=0; i < allOptions; i++){
+                option_list.children[i].classList.add("disabled"); //once user select an option then disabled all options
+            }
+            next_btn.classList.add("show"); //show the next button if user selected any option
+        }
+
+        function showResult(){
+            info_box.classList.remove("activeInfo"); //hide info box
+            quiz_box.classList.remove("activeQuiz"); //hide quiz box
+            result_box.classList.add("activeResult"); //show result box
+            const scoreText = result_box.querySelector(".score_text");
+            let scoreTag = '<span>🎉, Đồng chí hoàn thành bài kiểm tra với kết quả là:<br> <p>'+ userScore +'</p> trên <p>'+ questions.length +'</p> Câu hỏi</span>';
+            scoreText.innerHTML = scoreTag;  //adding new span tag inside score_Text
+        }
+
+        function startTimer(time){
+            counter = setInterval(timer, 1000);
+            function timer(){
+                timeCount.textContent = time; //changing the value of timeCount with time value
+                time--; //decrement the time value
+                if(time < 9){ //if timer is less than 9
+                    let addZero = timeCount.textContent;
+                    timeCount.textContent = "0" + addZero; //add a 0 before time value
+                }
+                if(time < 0){ //if timer is less than 0
+                    clearInterval(counter); //clear counter
+                    timeText.textContent = "Hết giờ"; //change the time text to time off
+                    const allOptions = option_list.children.length; //getting all option items
+                    let correcAns = questions[que_count].answer; //getting correct answer from array
+                    for(i=0; i < allOptions; i++){
+                        if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer
+                            option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
+                            option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
+                            console.log("Time Off: Auto selected correct answer.");
+                        }
+                    }
+                    for(i=0; i < allOptions; i++){
+                        option_list.children[i].classList.add("disabled"); //once user select an option then disabled all options
+                    }
+                    next_btn.classList.add("show"); //show the next button if user selected any option
+                }
+            }
+        }
+
+        function startTimerLine(time){
+            counterLine = setInterval(timer, 48);
+            function timer(){ //1000/29 * 16 = 549
+                //1000/? * 60 = 1249
+                time += 1; //upgrading time value with 1
+                time_line.style.width = time + "px"; //increasing width of time_line with px by time value
+                if(time > 1249){ //if time value is greater than 549
+                    clearInterval(counterLine); //clear counterLine
+                }
+            }
+        }
+
+        function queCounter(index){
+            //creating a new span tag and passing the question number and total question
+            let totalQueCounTag = '<span><p>'+ index +'</p> trên <p>'+ questions.length +'</p> Câu hỏi</span>';
+            bottom_ques_counter.innerHTML = totalQueCounTag;  //adding new span tag inside bottom_ques_counter
+        }
+    </script>
+    <script >
+        // creating an array and passing the number, questions, options, and answers
+        let questions = [];
+        let questions_full =  [
+            {
+                "numb": 1,
+                "question": "Thông tư số 56/2020/TT-BQP ngày 05/5/2022 của Bộ trưởng BQP quy định mật khẩu phức tạp là?",
+                "answer": "Là mật khẩu có ít nhất 8 ký tự, trong đó có các ký tự: Chữ cái viết hoa (A-Z), chữ cái viết thường (a-z), số (0-9), các ký tự đặc biệt khác trên bàn phím máy tính.",
+                "options": [
+                    "Là mật khẩu có ít nhất 8 ký tự.",
+                    "Là mật khẩu có ít nhất 8 ký tự, trong đó có các ký tự: Chữ cái viết hoa (A-Z), chữ cái viết thường (a-z), số (0-9), các ký tự đặc biệt khác trên bàn phím máy tính.",
+                    "Là mật khẩu có ít nhất 8 ký tự, trong đó có các ký tự: Chữ cái viết thường (a-z), số (0-9), các ký tự đặc biệt khác trên bàn phím máy tính.",
+                    "Là mật khẩu có ít nhất 8 ký tự, trong đó có các ký tự: Chữ cái viết hoa (A-Z), số (0-9), các ký tự đặc biệt khác trên bàn phím máy tính.",
+                ]
+            },
+            {
+                "numb": 2,
+                "question": "Thông tư số 56/2020/TT-BQP ngày 05/5/2022 của Bộ trưởng BQP quy định ai chịu trách nhiệm về an toàn thông tin, an ninh mạng của cơ quan, đơn vị mình quản lý?",
+                "answer": "Chỉ huy trưởng các cơ quan, đơn vị.",
+                "options": [
+                    "Cán bộ, nhân viên kiêm nhiệm CNTT.",
+                    "Chỉ huy trưởng các cơ quan, đơn vị.",
+                    "Chỉ huy cơ quan, đơn vị.",
+                    "Tất cả đáp án trên.",
+                ]
+            },
+            {
+                "numb": 3,
+                "question": "Thông tư số 56/2020/TT-BQP ngày 05/5/2022 của Bộ trưởng BQP quy định cơ quan chuyên trách quản lý an toàn thông tin trong BQP:",
+                "answer": "Bộ Tư lệnh 86",
+                "options": [
+                    "Cục Bảo vệ an ninh/TCCT.",
+                    "Bộ Tư lệnh 86",
+                    "Cục Cơ yếu/BTTM.",
+                    "Binh chủng Thông tin liên lạc.",
+                ]
+            },
+            {
+                "numb": 4,
+                "question": "Quy chế quản lý, sử dụng, bảo đảm an toàn thông tin máy tính trong QĐND Việt Nam (ban hành kèm theo Quyết định số 555/QĐ-TM ngày 06/3/2023 của Tổng Tham mưu trưởng QĐND Việt Nam) quy định máy tính kết nối mạng Truyền số liệu quân sự là gì?",
+                "answer": "Là máy tính của cơ quan, đơn vị được sử dụng để kết nối vào mạng Truyền số liệu quân sự.",
+                "options": [
+                    "Là máy tính của cơ quan, đơn vị được sử dụng để kết nối vào mạng Truyền số liệu quân sự.",
+                    "Là máy tính của cơ quan, đơn vị được sử dụng để kết nối, trao đổi dữ liệu với nhau qua mạng trong phạm vi một phòng hoặc một tòa nhà của cơ quan, đơn vị.",
+                    "Là máy tính của cơ quan, đơn vị được sử dụng để kết nối, trao đổi dữ liệu với nhau qua mạng trong phạm vi cơ quan, đơn vị.",
+                    "",
+                ]
+            },
+            {
+                "numb": 5,
+                "question": "Quy chế quản lý, sử dụng, bảo đảm an toàn thông tin máy tính trong QĐND Việt Nam (ban hành kèm theo Quyết định số 555/QĐ-TM ngày 06/3/2023 của Tổng Tham mưu trưởng QĐND Việt Nam) quy định người dùng khi chuyển công tác sang đơn vị mới hoặc không còn phục vụ trong Quân đội?",
+                "answer": "Phải bàn giao lại máy tính được giao quản lý, sử dụng cho đơn vị cũ, trừ trường hợp có quyết định mang theo của cấp có thẩm quyền.",
+                "options": [
+                    "Được mang theo máy tính được giao quản lý, sử dụng sang đơn vị mới.",
+                    "Phải bàn giao lại máy tính được giao quản lý, sử dụng cho đơn vị cũ.",
+                    "Phải bàn giao lại máy tính được giao quản lý, sử dụng cho đơn vị cũ, trừ trường hợp có quyết định mang theo của cấp có thẩm quyền.",
+                    "",
+                ]
+            },
+            {
+                "numb": 6,
+                "question": "Quy chế quản lý, sử dụng, bảo đảm an toàn thông tin máy tính trong QĐND Việt Nam (ban hành kèm theo Quyết định số 555/QĐ-TM ngày 06/3/2023 của Tổng Tham mưu trưởng QĐND Việt Nam) quy định việc chuyển đổi mục đích sử dụng máy tính?",
+                "answer": "Tất các các đáp trên.",
+                "options": [
+                    "Phải được phép của cấp có thẩm quyền.",
+                    "Phải được cơ quan (cán bộ) phụ trách CNTT thực hiện xóa, hủy dữ liệu an toàn. ",
+                    "Phải được cơ quan (cán bộ) phụ trách CNTT kiểm tra, triển khai các giải pháp bảo đảm an toàn thông tin phù hợp với mục đích sử dụng mới của máy tính theo quy định.",
+                    "Tất các các đáp trên.",
+                ]
+            },
+            {
+                "numb": 7,
+                "question": "Quy chế quản lý, sử dụng, bảo đảm an toàn thông tin máy tính trong QĐND Việt Nam (ban hành kèm theo Quyết định số 555/QĐ-TM ngày 06/3/2023 của Tổng Tham mưu trưởng QĐND Việt Nam) quy định một trong những hành vi bị nghiêm cấm:",
+                "answer": "Tự ý sửa chữa, thay thế, lắp mới, tráo đổi thành phần phần cứng hoặc tự ý cài đặt, cập nhật, nâng cấp, gỡ bỏ, thay đổi tính năng, vô hiệu hóa hoạt động hệ điều hành và các phần mềm khác trên máy tính.",
+                "options": [
+                    "Tự ý sửa chữa, thay thế, lắp mới, tráo đổi thành phần phần cứng hoặc tự ý cài đặt, cập nhật, nâng cấp, gỡ bỏ, thay đổi tính năng và các phần mềm khác trên máy tính.",
+                    "Tự ý tráo đổi thành phần phần cứng hoặc tự ý cài đặt, cập nhật, nâng cấp, gỡ bỏ, thay đổi tính năng và các phần mềm khác trên máy tính.",
+                    "Tự ý sửa chữa, thay thế, lắp mới, tráo đổi thành phần phần cứng hoặc tự ý cài đặt, cập nhật, nâng cấp, gỡ bỏ, thay đổi tính năng, vô hiệu hóa hoạt động hệ điều hành và các phần mềm khác trên máy tính.",
+                    "",
+                ]
+            },{
+            "numb": 8,
+                "question": "Quy chế quản lý, sử dụng, bảo đảm an toàn thông tin máy tính trong QĐND Việt Nam (ban hành kèm theo Quyết định số 555/QĐ-TM ngày 06/3/2023 của Tổng Tham mưu trưởng QĐND Việt Nam) quy định trao đổi tài liệu điện tử giữa máy tính không kết nối mạng, máy tính kết nối nội bộ với các loại máy tính khác (trừ máy tính Internet) thực hiện bằng giải pháp nào?",
+            "answer": "Tất cả đáp án trên.",
+                "options": [
+                "Sử dụng vật mang tin điện tử có cài đặt giải pháp bảo đảm an toàn thông tin do Bộ Tư lệnh 86 cung cấp, hướng dẫn.",
+                "Sử dụng USB bảo mật, an toàn do Cục Cơ yếu/BTTM cấp phát hoặc đĩa CD, DVD (dùng một lần và hủy)",
+                "Sử dụng máy tính trung gian chạy hệ điều hành khác hệ điều hành Windows.",
+                "Tất cả đáp án trên.",
+            ]
+        },{
+            "numb": 9,
+                "question": "Quy chế quản lý, sử dụng, bảo đảm an toàn thông tin máy tính trong QĐND Việt Nam (ban hành kèm theo Quyết định số 555/QĐ-TM ngày 06/3/2023 của Tổng Tham mưu trưởng QĐND Việt Nam) một trong những giải pháp thực hiện quy định trao đổi tài liệu điện tử giữa máy tính không kết nối mạng, máy tính kết nối nội bộ với máy tính Internet:",
+            "answer": "Máy tính trung gian chạy hệ điều hành khác hệ điều hành đang sử dụng kết hợp với vật mang tin điện tử có cài đặt giải pháp bảo đảm an toàn thông tin do Bộ Tư lệnh 86 cung cấp, hướng dẫn.",
+                "options": [
+                "Máy tính trung gian chạy hệ điều hành khác hệ điều hành đang sử dụng kết hợp với vật mang tin điện tử có cài đặt giải pháp bảo đảm an toàn thông tin do cơ quan công nghệ thông tin của đơn vị cung cấp, hướng dẫn.",
+                "Máy tính trung gian chạy hệ điều hành khác hệ điều hành đang sử dụng kết hợp với vật mang tin điện tử có cài đặt giải pháp bảo đảm an toàn thông tin do cơ quan công nghệ thông tin, cơ yếu đơn vị cung cấp, hướng dẫn.",
+                "Máy tính trung gian chạy hệ điều hành khác hệ điều hành đang sử dụng kết hợp với vật mang tin điện tử có cài đặt giải pháp bảo đảm an toàn thông tin do Bộ Tư lệnh 86 cung cấp, hướng dẫn.",
+                "",
+            ]
+        },{
+            "numb": 10,
+                "question": "Quy chế quản lý, sử dụng, bảo đảm an toàn thông tin máy tính trong QĐND Việt Nam (ban hành kèm theo Quyết định số 555/QĐ-TM ngày 06/3/2023 của Tổng Tham mưu trưởng QĐND Việt Nam) quy định không cài đặt những phần mềm nào dưới đây trên máy tính không kết nối mạng và máy tính kết nối nội bộ?",
+            "answer": "Tất cả đáp án trên.",
+                "options": [
+                "Phần mềm bẻ khóa.",
+                "Phần mềm không rõ nguồn gốc.",
+                "Phần mềm chưa kiểm tra, xác nhận bảo đảm an toàn thông tin.",
+                "Tất cả đáp án trên.",
+            ]
+        },{
+            "numb": 11,
+                "question": "Quy chế quản lý, sử dụng, bảo đảm an toàn thông tin máy tính trong QĐND Việt Nam (ban hành kèm theo Quyết định số 555/QĐ-TM ngày 06/3/2023 của Tổng Tham mưu trưởng QĐND Việt Nam) quy định những thông tin nào dưới đây cần phải khai báo trên hệ thống giám sát an toàn thông tin khi triển khai các giải pháp giám sát an toàn thông tin do BTL86 cung cấp cho máy tính kết nối mạng Truyền số liệu quân sự?",
+            "answer": "Tất cả đáp án trên",
+                "options": [
+                "Thông tin người sử dụng",
+                "Địa chỉ MAC",
+                "Địa chỉ IP",
+                "Tất cả đáp án trên",
+            ]
+        },{
+            "numb": 12,
+                "question": "Chỉ thị số 81/CT-BQP ngày 20/9/2022 của Bộ trưởng Bộ Quốc phòng nghiêm cấm:",
+            "answer": "Tất cả các đáp án trên.",
+                "options": [
+                "Sử dụng máy tính, thiết bị lưu trữ di động có chứa tài liệu quân sự kết nối mạng Internet hoặc máy tính sử dụng mạng Internet kết nối vào hệ thống mạng quân sự.",
+                "Mọi hành vi chụp ảnh, lưu trữ tài liệu bí mật quân sự trên điện thoại thông minh, máy tính cá nhân, thiết bị mang tin điện tử và gửi tài liệu qua tin nhắn trên mạng viễn thông, mạng xã hội trên Internet.",
+                "Tất cả các đáp án trên.",
+                "",
+            ]
+        },{
+            "numb": 13,
+                "question": "Quy chế quản lý, sử dụng, bảo đảm an toàn thông tin máy tính trong QĐND Việt Nam (ban hành kèm theo Quyết định số 555/QĐ-TM ngày 06/3/2023 của Tổng Tham mưu trưởng QĐND Việt Nam) quy định người dùng khi chuyển công tác sang đơn vị mới hoặc không còn phục vụ trong Quân đội?",
+            "answer": "Phải bàn giao lại máy tính được giao quản lý, sử dụng cho đơn vị cũ, trừ trường hợp có quyết định mang theo của cấp có thẩm quyền.",
+                "options": [
+                "Được mang theo máy tính được giao quản lý, sử dụng sang đơn vị mới.",
+                "Phải bàn giao lại máy tính được giao quản lý, sử dụng cho đơn vị cũ.",
+                "Phải bàn giao lại máy tính được giao quản lý, sử dụng cho đơn vị cũ, trừ trường hợp có quyết định mang theo của cấp có thẩm quyền.",
+                "",
+            ]
+        },{
+            "numb": 14,
+                "question": "Theo Thông tư số 56/2020/TT-BQP ngày 05/5/2022 của Bộ trưởng BQP, một trong các quy định quản lý vật mang tin điện tử là:",
+            "answer": "Vật mang tin điện tử sử dụng cho lưu trữ, trao đổi tài liệu điện tử quân sự phải có giải pháp bảo đảm an toàn thông tin, an ninh mạng do cơ quan quản lý CNTT hoặc cơ quan cơ yếu cấp phát. Người sử dụng vật mang tin điện tử có trách nhiệm quản lý, bảo vệ, tránh làm mất, lộ lọt thông tin.",
+                "options": [
+                "Vật mang tin điện tử sử dụng cho lưu trữ, trao đổi tài liệu điện tử quân sự phải có giải pháp bảo đảm an toàn thông tin, an ninh mạng do cơ quan cơ yếu cấp phát. Người sử dụng vật mang tin điện tử có trách nhiệm quản lý, bảo vệ, tránh làm mất, lộ lọt thông tin.",
+                "Vật mang tin điện tử sử dụng cho lưu trữ, trao đổi tài liệu điện tử quân sự phải có giải pháp bảo đảm an toàn thông tin, an ninh mạng do cơ quan quản lý CNTT cài đặt, cấp phát. Người sử dụng vật mang tin điện tử có trách nhiệm quản lý, bảo vệ, tránh làm mất, lộ lọt thông tin.",
+                "Vật mang tin điện tử sử dụng cho lưu trữ, trao đổi tài liệu điện tử quân sự phải có giải pháp bảo đảm an toàn thông tin, an ninh mạng do cơ quan quản lý CNTT hoặc cơ quan cơ yếu cấp phát. Người sử dụng vật mang tin điện tử có trách nhiệm quản lý, bảo vệ, tránh làm mất, lộ lọt thông tin.",
+                "",
+            ]
+        },{
+            "numb": 15,
+                "question": "Thông tư số 11/2022/TT-BQP ngày 24/01/2022 của Bộ trưởng BQP quy định phần mềm, cơ sở dữ liệu dùng chung:",
+            "answer": "Là phần mềm, cơ sở dữ liệu phục vụ công tác quản lý, chỉ đạo, điều hành, được sử dụng tại nhiều cơ quan, đơn vị trực thuộc Bộ Quốc phòng và có khả năng kết nối, chia sẽ dữ liệu với các phần mềm khác trong Bộ Quốc phòng.",
+                "options": [
+                "Là phần mềm, cơ sở dữ liệu phục vụ công tác quản lý, chỉ đạo, điều hành, được sử dụng tại nhiều cơ quan, đơn vị trực thuộc Bộ Quốc phòng và có khả năng kết nối, chia sẽ dữ liệu với các phần mềm khác trong Bộ Quốc phòng.",
+                "Là phần mềm, cơ sở dữ liệu phục vụ công tác quản lý, chỉ đạo, điều hành của các cơ quan, đơn vị trực thuộc Bộ Quốc phòng và có khả năng kết nối, chia sẽ dữ liệu với các phần mềm khác trong Bộ Quốc phòng.",
+                "Là phần mềm, cơ sở dữ liệu phục vụ công tác quản lý, chỉ đạo, điều hành, được sử dụng tại nhiều cơ quan, đơn vị trực thuộc Bộ Quốc phòng.",
+                "",
+            ]
+        },{
+            "numb": 16,
+                "question": "Thông tư số 11/2022/TT-BQP ngày 24/01/2022 của Bộ trưởng BQP quy định phần mềm, cơ sở dữ liệu chuyên ngành:",
+            "answer": "Là phần mềm, cơ sở dữ liệu phục vụ riêng cho từng ngành, từng lĩnh vực để đáp ứng yêu cầu quản lý, chỉ đạo, điều hành của Thủ trưởng Bộ Quốc phòng và các cơ quan, đơn vị chuyên ngành.",
+                "options": [
+                "Là phần mềm, cơ sở dữ liệu phục vụ riêng cho từng ngành, từng lĩnh vực để đáp ứng yêu cầu quản lý, chỉ đạo, điều hành của Thủ trưởng Bộ Quốc phòng và các cơ quan, đơn vị chuyên ngành.",
+                "Là phần mềm, cơ sở dữ liệu phục vụ quản lý, chỉ đạo, điều hành của Thủ trưởng Bộ Quốc phòng và các cơ quan, đơn vị chuyên ngành.",
+                "Là phần mềm, cơ sở dữ liệu phục vụ công tác quản lý, chỉ đạo, điều hành của các cơ quan, đơn vị trực thuộc Bộ Quốc phòng và có khả năng kết nối, chia sẽ dữ liệu với các phần mềm khác trong Bộ Quốc phòng.",
+                "",
+            ]
+        },{
+            "numb": 17,
+                "question": "Theo “Cẩm nang chuyển đổi số” của nhà xuất bản Thông tin và truyền thông (tái bản có chỉnh sửa, cập nhật, bổ sung năm 2021), khó khăn và thách thức lớn nhất của chuyển đổi số là:",
+            "answer": "Khó khăn lớn nhất của chuyển đổi số là thay đổi thói quen. Thách thức lớn nhất của chuyển đổi số là có nhận thức đúng.",
+                "options": [
+                "Khó khăn lớn nhất của chuyển đổi số là đầu tư hạ tầng kỹ thuật. Thách thức lớn nhất của chuyển đổi số là có nhận thức đúng.",
+                "Khó khăn lớn nhất của chuyển đổi số là thay đổi cơ chế, chính sách. Thách thức lớn nhất của chuyển đổi số là có nhận thức đúng.",
+                "Khó khăn lớn nhất của chuyển đổi số là thay đổi thói quen. Thách thức lớn nhất của chuyển đổi số là có nhận thức đúng.",
+                "",
+            ]
+        },{
+            "numb": 18,
+                "question": "Theo “Cẩm nang chuyển đổi số” của nhà xuất bản Thông tin và truyền thông (tái bản có chỉnh sửa, cập nhật, bổ sung năm 2021), Chính phủ số:",
+            "answer": "Là chính phủ có toàn bộ hoạt động an toàn trên môi trường số, có mô hình hoạt động được thiết kế lại và vận hành dựa trên dữ liệu và công nghệ số…",
+                "options": [
+                "Là chính phủ có toàn bộ hoạt động an toàn trên môi trường số, có mô hình hoạt động được thiết kế lại và vận hành dựa trên dữ liệu và công nghệ số…",
+                "Là chính phủ tin học hóa quy trình đã có, cung cấp trực tuyến các dịch vụ hành chính công đã có.",
+                "Là chính phủ có một phần hoạt động an toàn trên môi trường số, có mô hình hoạt động được thiết kế lại và vận hành dựa trên dữ liệu và công nghệ số…",
+                "",
+            ]
+        },{
+            "numb": 19,
+                "question": "Theo “Cẩm nang chuyển đổi số” của nhà xuất bản Thông tin và truyền thông (tái bản có chỉnh sửa, cập nhật, bổ sung năm 2021), Chính phủ điện tử:",
+            "answer": "Là chính phủ ứng dụng công nghệ thông tin để nâng cao hiệu lực, hiệu quả hoạt động, phục vụ người dân và doanh nghiệp tốt hơn. Hay nói một cách khác, đây là quá trình tin học hóa các hoạt động của chính phủ.",
+                "options": [
+                "Là chính phủ ứng dụng công nghệ số để nâng cao năng suất lao động, phục vụ người dân và doanh nghiệp tốt hơn. Hay nói một cách khác, đây là quá trình tin học hóa các hoạt động của chính phủ.",
+                "Là chính phủ ứng dụng công nghệ thông tin để nâng cao hiệu quả hoạt động công khai, minh bạch, phòng, chống tham nhũng, phục vụ người dân và doanh nghiệp tốt hơn. Là quá trình tin học hóa các hoạt động của chính phủ.",
+                "Là chính phủ ứng dụng công nghệ thông tin để nâng cao hiệu lực, hiệu quả hoạt động, phục vụ người dân và doanh nghiệp tốt hơn. Hay nói một cách khác, đây là quá trình tin học hóa các hoạt động của chính phủ.",
+                "",
+            ]
+        },{
+            "numb": 20,
+                "question": "Theo “Cẩm nang chuyển đổi số” của nhà xuất bản Thông tin và truyền thông (tái bản có chỉnh sửa, cập nhật, bổ sung năm 2021), chuyển đổi số:",
+            "answer": "Là quá trình thay đổi tổng thể và toàn diện của cá nhân, tổ chức về cách sống, cách làm việc từ môi trường thực sang môi trường số.",
+                "options": [
+                "Là quá trình thay đổi tổng thể và toàn diện của cá nhân, tổ chức về cách sống, cách làm việc từ môi trường thực sang môi trường số.",
+                "Là quá trình thay đổi tổng thể và toàn diện của cá nhân, tổ chức; thể hiện một cách thức tư duy và hành động mới, đó là ra quyết định dựa trên dữ liệu.",
+                "Là cuộc cách mạng về tư duy, nhận thức, thể chế, chính sách nhiều hơn là một cuộc cách mạng về công nghệ.",
+                "",
+            ]
+        },
+        ];
+        genRandomQuestion();
+        function genRandomQuestion() {
+            // Used like so
+            shuffle(questions_full);
+            questions = questions_full.slice(0, 10);
+            console.log(questions);
+        }
+
+        function genFullQuestion() {
+            // Used like so
+            questions = questions_full;
+            console.log(questions);
+        }
+
+        function shuffle(array) {
+            let currentIndex = array.length,  randomIndex;
+
+            // While there remain elements to shuffle.
+            while (currentIndex > 0) {
+
+                // Pick a remaining element.
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+
+                // And swap it with the current element.
+                [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]];
+            }
+
+            return array;
+        }
+
+
+
+
+
+    </script>
+</body>
+</html>

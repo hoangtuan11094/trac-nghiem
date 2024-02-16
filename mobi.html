@@ -1,0 +1,1798 @@
+<!-- Created By CodingNepal - www.codingnepalweb.com  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Ôn luyện | TCHC</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAweome CDN Link for Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+
+<style>
+    /* importing google fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body{
+        background: #007bff;
+    }
+
+    ::selection{
+        color: #fff;
+        background: #007bff;
+    }
+
+
+    .info_box,
+    .quiz_box,
+    .result_box{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .start_btn{
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+    }
+
+    .start_btn_random{
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+    }
+
+    .info_box.activeInfo,
+    .quiz_box.activeQuiz,
+    .result_box.activeResult{
+        opacity: 1;
+        z-index: 5;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .start_btn button{
+        font-size: 12pt;
+        font-weight: 500;
+        color: #007bff;
+        padding: 15px 30px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .start_btn_random button{
+        font-size: 12pt;
+        font-weight: 500;
+        color: #007bff;
+        padding: 15px 30px;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .info_box{
+        width: 400px;
+        background: #fff;
+        border-radius: 5px;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .info_box .info-title{
+        height: 60px;
+        width: 100%;
+        border-bottom: 1px solid lightgrey;
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        border-radius: 5px 5px 0 0;
+        font-size: 12pt;
+        font-weight: 600;
+    }
+
+    .info_box .info-list{
+        padding: 15px 30px;
+    }
+
+    .info_box .info-list .info{
+        margin: 5px 0;
+        font-size: 10pt;
+    }
+
+    .info_box .info-list .info span{
+        font-weight: 600;
+        color: #007bff;
+    }
+    .info_box .buttons{
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 30px;
+        border-top: 1px solid lightgrey;
+    }
+
+    .info_box .buttons button{
+        margin: 0 5px;
+        height: 40px;
+        width: 100px;
+        font-size: 12pt;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: all 0.3s ease;
+    }
+
+    .quiz_box{
+        width: 400px;
+        background: #fff;
+        border-radius: 5px;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .quiz_box header{
+        position: relative;
+        z-index: 2;
+        height: 70px;
+        padding: 0 30px;
+        background: #fff;
+        border-radius: 5px 5px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.1);
+    }
+
+    .quiz_box header .title{
+        font-size: 12pt;
+        font-weight: 600;
+    }
+
+    .quiz_box header .timer{
+        color: #004085;
+        background: #cce5ff;
+        border: 1px solid #b8daff;
+        height: 45px;
+        padding: 0 8px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 145px;
+    }
+
+    .quiz_box header .timer .time_left_txt{
+        font-weight: 400;
+        font-size: pt;
+        user-select: none;
+    }
+
+    .quiz_box header .timer .timer_sec{
+        font-size: 10pt;
+        font-weight: 500;
+        height: 30px;
+        width: 45px;
+        color: #fff;
+        border-radius: 5px;
+        line-height: 30px;
+        text-align: center;
+        background: #343a40;
+        border: 1px solid #343a40;
+        user-select: none;
+    }
+
+    .quiz_box header .time_line{
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        height: 3px;
+        background: #007bff;
+    }
+
+    section{
+        padding: 25px 30px 20px 30px;
+        background: #fff;
+    }
+
+    section .que_text{
+        font-size: 11pt;
+        font-weight: 600;
+    }
+
+    section .option_list{
+        padding: 20px 0px;
+        display: block;
+    }
+
+    section .option_list .option{
+        background: aliceblue;
+
+        border: 1px solid #84c5fe;
+        border-radius: 5px;
+        padding: 8px 15px;
+        font-size: 12pt;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    section .option_list .option span{
+        font-size: 10pt;
+        width: 285.68px;
+    }
+
+    section .option_list .option:last-child{
+        margin-bottom: 0px;
+    }
+
+    section .option_list .option:hover{
+        color: #004085;
+        background: #cce5ff;
+        border: 1px solid #b8daff;
+    }
+
+    section .option_list .option.correct{
+        color: #155724;
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+    }
+
+    section .option_list .option.incorrect{
+        color: #721c24;
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+    }
+
+    section .option_list .option.disabled{
+        pointer-events: none;
+    }
+
+    section .option_list .option .icon{
+        height: 26px;
+        width: 26px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 13px;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        line-height: 24px;
+    }
+    .option_list .option .icon.tick{
+        color: #23903c;
+        border-color: #23903c;
+        background: #d4edda;
+    }
+
+    .option_list .option .icon.cross{
+        color: #a42834;
+        background: #f8d7da;
+        border-color: #a42834;
+    }
+
+    footer{
+        height: 80px;
+        padding: 0 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid lightgrey;
+    }
+
+    footer .total_que span{
+        margin-bottom: 20px;
+        display: flex;
+        user-select: none;
+    }
+
+    footer .total_que span p{
+        font-weight: 500;
+        padding: 0 5px;
+    }
+
+    footer .total_que span p:first-child{
+        padding-left: 0px;
+    }
+
+    footer button{
+        height: 40px;
+        margin-bottom: 20px;
+        padding: 0 13px;
+        font-size: 12pt;
+        font-weight: 400;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        color: #fff;
+        border-radius: 5px;
+        background: #007bff;
+        border: 1px solid #007bff;
+        line-height: 10px;
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.95);
+        transition: all 0.3s ease;
+    }
+
+    footer button:hover{
+        background: #0263ca;
+    }
+
+    footer button.show{
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1);
+    }
+
+    .result_box{
+        background: #fff;
+        border-radius: 5px;
+        display: flex;
+        padding: 25px 30px;
+        width: 400px;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .result_box .icon{
+        font-size: 40pt;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .result_box .complete_text{
+        font-size: 10pt;
+        font-weight: 500;
+    }
+
+    .result_box .score_text span{
+        display: flex;
+        margin: 10px 0;
+        font-size: 10pt;
+        font-weight: 500;
+    }
+
+    .result_box .score_text span p{
+        padding: 0 4px;
+        font-weight: 600;
+    }
+
+    .result_box .buttons{
+        display: flex;
+        margin: 20px 0;
+    }
+
+    .result_box .buttons button{
+        margin: 0 10px;
+        height: 45px;
+        padding: 0 20px;
+        font-size: 12pt;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        transition: all 0.3s ease;
+    }
+
+    .buttons button.restart{
+        color: #fff;
+        background: #007bff;
+    }
+
+    .buttons button.restart:hover{
+        background: #0263ca;
+    }
+
+    .buttons button.quit{
+        color: #007bff;
+        background: #fff;
+    }
+
+    .buttons button.quit:hover{
+        color: #fff;
+        background: #007bff;
+    }
+</style>
+<body>
+    <!-- start Quiz button -->
+    <div class="start_btn"><button>Ôn luyện 95 câu hỏi</button></div>
+    <div class="start_btn_random"><button>Ôn luyện bộ đề 20 câu hỏi ngẫu nhiên</button></div>
+    <!-- Info Box -->
+    <div class="info_box">
+        <div class="info-title"><span>Thể lệ</span></div>
+        <div class="info-list">
+            <div class="info">- Bạn có <span>15 giây</span> để trả lời mỗi câu hỏi.</div>
+            <div class="info">- Bạn chỉ được chọn đáp án 1 lần duy nhất, không thể chọn lại.</div>
+            <div class="info">- Bạn không thể chọn đáp án khi đã hết thời gian.</div>
+            <div class="info">- Kết quả sẽ hiển thị sau khi bạn hoàn thành ôn luyện.</div>
+        </div>
+        <div class="buttons">
+            <button class="quit">Thoát</button>
+            <button class="restart">Bắt đầu</button>
+        </div>
+    </div>
+
+    <!-- Quiz Box -->
+    <div class="quiz_box">
+        <header>
+            <div class="title">Ôn luyện</div>
+            <div class="timer">
+                <div class="time_left_txt">Thời gian:</div>
+                <div class="timer_sec">15</div>
+            </div>
+            <div class="time_line"></div>
+        </header>
+        <section>
+            <div class="que_text">
+                <!-- Here I've inserted question from JavaScript -->
+            </div>
+            <div class="option_list">
+                <!-- Here I've inserted options from JavaScript -->
+            </div>
+        </section>
+
+        <!-- footer of Quiz Box -->
+        <footer>
+            <div class="total_que">
+                <!-- Here I've inserted Question Count Number from JavaScript -->
+            </div>
+            <button class="next_btn">Câu tiếp</button>
+        </footer>
+    </div>
+
+    <!-- Result Box -->
+    <div class="result_box">
+        <div class="icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        <div class="complete_text">Hoàn thành Ôn luyện!</div>
+        <div class="score_text">
+            <!-- Here I've inserted Score Result from JavaScript -->
+        </div>
+        <div class="buttons">
+            <button class="restart">Ôn lại</button>
+            <button class="quit">Thoát</button>
+        </div>
+    </div>
+
+    <!-- Inside this JavaScript file I've inserted Questions and Options only -->
+
+
+    <!-- Inside this JavaScript file I've coded all Quiz Codes -->
+    <script >
+        //selecting all required elements
+        const start_btn = document.querySelector(".start_btn button");
+        const start_btn_random = document.querySelector(".start_btn_random button");
+        const info_box = document.querySelector(".info_box");
+        const exit_btn = info_box.querySelector(".buttons .quit");
+        const continue_btn = info_box.querySelector(".buttons .restart");
+        const quiz_box = document.querySelector(".quiz_box");
+        const result_box = document.querySelector(".result_box");
+        const option_list = document.querySelector(".option_list");
+        const time_line = document.querySelector("header .time_line");
+        const timeText = document.querySelector(".timer .time_left_txt");
+        const timeCount = document.querySelector(".timer .timer_sec");
+
+        // if startQuiz button clicked
+        start_btn.onclick = ()=>{
+            genFullQuestion();
+            info_box.classList.add("activeInfo"); //show info box
+        }
+
+        start_btn_random.onclick = ()=>{
+            genRandomQuestion();
+            info_box.classList.add("activeInfo"); //show info box
+        }
+
+        // if exitQuiz button clicked
+        exit_btn.onclick = ()=>{
+            info_box.classList.remove("activeInfo"); //hide info box
+        }
+
+        // if continueQuiz button clicked
+        continue_btn.onclick = ()=>{
+            info_box.classList.remove("activeInfo"); //hide info box
+            quiz_box.classList.add("activeQuiz"); //show quiz box
+            showQuetions(0); //calling showQestions function
+            queCounter(1); //passing 1 parameter to queCounter
+            startTimer(60); //calling startTimer function
+            startTimerLine(0); //calling startTimerLine function
+        }
+
+        let timeValue =  60;
+        let que_count = 0;
+        let que_numb = 1;
+        let userScore = 0;
+        let counter;
+        let counterLine;
+        let widthValue = 0;
+
+        const restart_quiz = result_box.querySelector(".buttons .restart");
+        const quit_quiz = result_box.querySelector(".buttons .quit");
+
+        // if restartQuiz button clicked
+        restart_quiz.onclick = ()=>{
+            quiz_box.classList.add("activeQuiz"); //show quiz box
+            result_box.classList.remove("activeResult"); //hide result box
+            timeValue = 60;
+            que_count = 0;
+            que_numb = 1;
+            userScore = 0;
+            widthValue = 0;
+            showQuetions(que_count); //calling showQestions function
+            queCounter(que_numb); //passing que_numb value to queCounter
+            clearInterval(counter); //clear counter
+            clearInterval(counterLine); //clear counterLine
+            startTimer(timeValue); //calling startTimer function
+            startTimerLine(widthValue); //calling startTimerLine function
+            timeText.textContent = "Thời gian"; //change the text of timeText to Time Left
+            next_btn.classList.remove("show"); //hide the next button
+        }
+
+        // if quitQuiz button clicked
+        quit_quiz.onclick = ()=>{
+            window.location.reload(); //reload the current window
+        }
+
+        const next_btn = document.querySelector("footer .next_btn");
+        const bottom_ques_counter = document.querySelector("footer .total_que");
+
+        // if Next Que button clicked
+        next_btn.onclick = ()=>{
+            if(que_count < questions.length - 1){ //if question count is less than total question length
+                que_count++; //increment the que_count value
+                que_numb++; //increment the que_numb value
+                showQuetions(que_count); //calling showQestions function
+                queCounter(que_numb); //passing que_numb value to queCounter
+                clearInterval(counter); //clear counter
+                clearInterval(counterLine); //clear counterLine
+                startTimer(timeValue); //calling startTimer function
+                startTimerLine(widthValue); //calling startTimerLine function
+                timeText.textContent = "Thời gian"; //change the timeText to Time Left
+                next_btn.classList.remove("show"); //hide the next button
+            }else{
+                clearInterval(counter); //clear counter
+                clearInterval(counterLine); //clear counterLine
+                showResult(); //calling showResult function
+            }
+        }
+
+        // getting questions and options from array
+        function showQuetions(index){
+            const que_text = document.querySelector(".que_text");
+
+            //creating a new span and div tag for question and option and passing the value using array index
+            let que_tag = '<span>'+ que_numb + ". " + questions[index].question +'</span>';
+            let option_tag = '<div class="option"><span>'+ questions[index].options[0] +'</span></div>'
+                + '<div class="option"><span>'+ questions[index].options[1] +'</span></div>'
+                + '<div class="option"><span>'+ questions[index].options[2] +'</span></div>'
+                + '<div class="option"><span>'+ questions[index].options[3] +'</span></div>';
+            que_text.innerHTML = que_tag; //adding new span tag inside que_tag
+            option_list.innerHTML = option_tag; //adding new div tag inside option_tag
+
+            const option = option_list.querySelectorAll(".option");
+
+            // set onclick attribute to all available options
+            for(i=0; i < option.length; i++){
+                option[i].setAttribute("onclick", "optionSelected(this)");
+            }
+        }
+        // creating the new div tags which for icons
+        let tickIconTag = '<div class="icon tick"><i class="fas fa-check"></i></div>';
+        let crossIconTag = '<div class="icon cross"><i class="fas fa-times"></i></div>';
+
+        //if user clicked on option
+        function optionSelected(answer){
+            clearInterval(counter); //clear counter
+            clearInterval(counterLine); //clear counterLine
+            let userAns = answer.textContent; //getting user selected option
+            let correcAns = questions[que_count].answer; //getting correct answer from array
+            const allOptions = option_list.children.length; //getting all option items
+
+            if(userAns == correcAns){ //if user selected option is equal to array's correct answer
+                userScore += 1; //upgrading score value with 1
+                answer.classList.add("correct"); //adding green color to correct selected option
+                answer.insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to correct selected option
+                console.log("Correct Answer");
+                console.log("Your correct answers = " + userScore);
+            }else{
+                answer.classList.add("incorrect"); //adding red color to correct selected option
+                answer.insertAdjacentHTML("beforeend", crossIconTag); //adding cross icon to correct selected option
+                console.log("Wrong Answer");
+
+                for(i=0; i < allOptions; i++){
+                    if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer
+                        option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
+                        option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
+                        console.log("Auto selected correct answer.");
+                    }
+                }
+            }
+            for(i=0; i < allOptions; i++){
+                option_list.children[i].classList.add("disabled"); //once user select an option then disabled all options
+            }
+            next_btn.classList.add("show"); //show the next button if user selected any option
+        }
+
+        function showResult(){
+            info_box.classList.remove("activeInfo"); //hide info box
+            quiz_box.classList.remove("activeQuiz"); //hide quiz box
+            result_box.classList.add("activeResult"); //show result box
+            const scoreText = result_box.querySelector(".score_text");
+            let scoreTag = '<span>🎉, KQ: <p>'+ userScore +'</p> trên <p>'+ questions.length +'</p> Câu hỏi</span>';
+            scoreText.innerHTML = scoreTag;  //adding new span tag inside score_Text
+        }
+
+        function startTimer(time){
+            counter = setInterval(timer, 1000);
+            function timer(){
+                timeCount.textContent = time; //changing the value of timeCount with time value
+                time--; //decrement the time value
+                if(time < 9){ //if timer is less than 9
+                    let addZero = timeCount.textContent;
+                    timeCount.textContent = "0" + addZero; //add a 0 before time value
+                }
+                if(time < 0){ //if timer is less than 0
+                    clearInterval(counter); //clear counter
+                    timeText.textContent = "Hết giờ"; //change the time text to time off
+                    const allOptions = option_list.children.length; //getting all option items
+                    let correcAns = questions[que_count].answer; //getting correct answer from array
+                    for(i=0; i < allOptions; i++){
+                        if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer
+                            option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
+                            option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
+                            console.log("Time Off: Auto selected correct answer.");
+                        }
+                    }
+                    for(i=0; i < allOptions; i++){
+                        option_list.children[i].classList.add("disabled"); //once user select an option then disabled all options
+                    }
+                    next_btn.classList.add("show"); //show the next button if user selected any option
+                }
+            }
+        }
+
+        function startTimerLine(time){
+            counterLine = setInterval(timer, 150);
+            function timer(){
+                time += 1; //upgrading time value with 1
+                time_line.style.width = time + "px"; //increasing width of time_line with px by time value
+                if(time > 399){ //if time value is greater than 549
+                    clearInterval(counterLine); //clear counterLine
+                }
+            }
+        }
+
+        function queCounter(index){
+            //creating a new span tag and passing the question number and total question
+            let totalQueCounTag = '<span><p>'+ index +'</p> trên <p>'+ questions.length +'</p> Câu hỏi</span>';
+            bottom_ques_counter.innerHTML = totalQueCounTag;  //adding new span tag inside bottom_ques_counter
+        }
+    </script>
+    <script >
+        // creating an array and passing the number, questions, options, and answers
+        let questions = [];
+        let questions_full =  [
+            {
+                "numb": 1,
+                "question": "Đồng chí cho biết Chương trình hành động 5 năm của Phụ nữ Quân đội (2021-2026) xác định có bao nhiêu nhiệm vụ và nội dung “Tập trung thực hiện hiệu quả 2 khâu đột phá” là nội dung của nhiệm vụ thứ mấy: ",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 2. ",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 2. ",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 nhiệm vụ, các nội dung trên là nhiệm vụ 2.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 3 ",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 nhiệm vụ, các nội dung trên là nhiệm vụ 4"
+                ]
+            },
+            {
+                "numb": 2,
+                "question": "Đồng chí cho biết mục tiêu “Trong lĩnh vực y tế”  là mục tiêu số mấy trong Kế hoạch hành động vì sự tiến bộ phụ nữ trong Quân đội giai đoạn 2021-2025:",
+                "answer": "Mục tiêu 4.",
+                "options": [
+                    "Mục tiêu 1.",
+                    "Mục tiêu 2.",
+                    "Mục tiêu 3.",
+                    "Mục tiêu 4."
+                ]
+            },
+            {
+                "numb": 3,
+                "question": "Mục tiêu của Chương trình hành động 5 năm của Phụ nữ Quân đội (2021-2026), gồm những mục tiêu cụ thể nào dưới đây:",
+                "answer": "Tất cả đáp án A, B, C.",
+                "options": [
+                    "Phụ nữ Quân đội phát huy truyền thống, nâng cao bản lĩnh chính trị, ý thức chấp hành pháp luật Nhà nước, kỷ luật Quân đội; tích cực học tập, nâng cao trình độ chuyên môn nghiệp vụ; rèn luyện phẩm chất đạo đức, hoàn thành tốt nhiệm vụ, xây dựng gia đình hạnh phúc.",
+                    "Xây dựng người PNQĐ đạt tiêu chí “Trí tuệ, bản lĩnh, kỷ cương, nhân ái”, xứng danh “Bộ đội Cụ Hồ” thời kỳ mới, người phụ nữ Việt Nam thời đại mới.",
+                    "Tiếp tục đổi mới nội dung, phương thức hoạt động, đẩy mạnh ứng dụng công nghệ thông tin, xây dựng tổ chức Hội vững mạnh, tham mưu có hiệu quả công tác cán bộ nữ; tích cực tham gia xây dựng tổ chức đảng trong sạch vững mạnh tiêu biểu, cơ quan, đơn vị vững mạnh toàn diện “mẫu mực, tiêu biểu”, góp phần quan trọng vào sự nghiệp xây dựng Quân đội, củng cố quốc phòng, bảo vệ vững chắc Tổ quốc Việt Nam XHCN.",
+                    "Tất cả đáp án A, B, C."
+                ]
+            },
+            {
+                "numb": 4,
+                "question": "Đồng chí cho biết Mục tiêu 2 trong Kế hoạch hành động Vì sự tiến bộ của phụ nữ và bình đẳng giới trong Quân đội giai đoạn 2021 - 2025 được xác định nội dung gì:",
+                "answer": "Trong lĩnh vực kinh tế, lao động.",
+                "options": [
+                    "Trong giáo dục, đào tạo.",
+                    "Trong lĩnh vực kinh tế, lao động.",
+                    "Trong lĩnh vực chính trị.",
+                    "Trong lĩnh vực thông tin, truyền thông."
+                ]
+            },
+            {
+                "numb": 5,
+                "question": "Chương trình hành động 5 năm của Phụ nữ Quân đội (2021-2026) xác định bao nhiêu chỉ tiêu:",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 5 chỉ tiêu",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 chỉ tiêu",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 8 chỉ tiêu"
+                ]
+            },
+            {
+                "numb": 6,
+                "question": "Đồng chí hãy nêu các tiêu chí của Cuộc vận động “Xây dựng gia đình 5 có, 3 sạch”:",
+                "answer": "Có ngôi nhà an toàn; có sinh kế bền vững; có sức khỏe; có kiến thức; có nếp sống văn hóa; sạch nhà, sạch bếp, sạch ngõ.",
+                "options": [
+                    "Có tiền tích luỹ; có sinh kế bền vững; có sức khỏe; có trí tuệ; có nếp sống văn hóa; sạch phòng, sạch nhà, sạch bếp.",
+                    "Có tiền tích luỹ; có công việc ổn định; có sức khỏe; có năng lực; có nếp sống văn hóa; sạch phòng, sạch nhà, sạch bếp.",
+                    "Có ngôi nhà an toàn; có sinh kế bền vững; có sức khỏe; có kiến thức; có nếp sống văn hóa; sạch nhà, sạch bếp, sạch ngõ.",
+                    "Có ngôi nhà an toàn; có sinh kế bền vững; có sức khỏe; có năng lực; có cuộc sống văn minh; sạch nhà, sạch bếp, sạch ngõ."
+                ]
+            },
+            {
+                "numb": 7,
+                "question": "Mục tiêu “Xứng danh Bộ đội Cụ Hồ thời kỳ mới” là mục tiêu cao nhất trong phong trào thi đua của Phụ nữ Quân đội triển khai trong giai đoạn 2021-2026, gồm những nội dung nào dưới đây:",
+                "answer": "Tất cả đáp án A, B, C.",
+                "options": [
+                    "Bản lĩnh chính trị, động cơ trong sáng, trách nhiệm cao; đạo đức, lối sống trong sạch, lành mạnh.",
+                    "Có văn hóa, tri thức khoa học, trình độ quân sự, năng lực, phương pháp, tác phong công tác và sức khỏe đáp ứng yêu cầu nhiệm vụ; thực hành dân chủ, kỷ luật tự giác, nghiêm minh.",
+                    "Chăm lo xây dựng đoàn kết nội bộ tốt; tôn trọng, giúp đỡ, gắn bó máu thịt với Nhân dân; có tinh thần quốc tế trong sáng.",
+                    "Tất cả đáp án A, B, C."
+                ]
+            },
+            {
+                "numb": 8,
+                "question": "Đồng chí cho biết nội dung cần phấn đấu, rèn luyện Tiêu chí 1 \"Phụ nữ Quân đội trí tuệ - bản lĩnh\"  được xác định trong phong trào thi đua của phụ nữ Quân đội giai đoạn 2021-2026:",
+                "answer": "Cả 3 đáp án trên đều đúng",
+                "options": [
+                    "Có văn hóa, tri thức khoa học, trình độ quân sự, năng lực, phương pháp, tác phong công tác và sức khỏe đáp ứng yêu cầu nhiệm vụ. ",
+                    "Có bản lĩnh chính trị vững vàng, động cơ phấn đấu trong sáng, tinh thần trách nhiệm cao; có tinh thần đấu tranh tự phê bình và phê bình nghiêm túc.",
+                    "Có đạo đức, lối sống trong sạch, lành mạnh; thực sự cần, kiệm, liêm, chính, chí công vô tư.",
+                    "Cả 3 đáp án trên đều đúng"
+                ]
+            },
+            {
+                "numb": 9,
+                "question": "Chỉ tiêu “100% cán bộ, hội viên được tuyên truyền kiến thức, kỹ năng xây dựng gia đình hạnh phúc ...” và “Phấn đấu đến năm 2026, tham mưu, đề xuất được từ 1 đến 2 chính sách đối với Phụ nữ Quân đội” là chỉ tiêu thứ mấy trong Chương trình hành động 5 năm của Phụ nữ Quân đội (2021-2026):",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 4, 5.",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 1, 2.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 3, 4.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 4, 5.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 6, 7."
+                ]
+            },
+            {
+                "numb": 10,
+                "question": "“Chủ động, sáng tạo tổ chức thực hiện có hiệu quả phong trào thi đua Phụ nữ Quân đội trí tuệ - bản lĩnh, hoàn thành tốt nhiệm vụ, xây dựng gia đình hạnh phúc, xứng danh Bộ đội Cụ Hồ thời kỳ mới...” là nội dung của nhiệm vụ thứ mấy trong Chương trình hành động 5 năm của Phụ nữ Quân đội (2021-2026):",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 4.",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 2.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 3.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 4.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 5."
+                ]
+            },
+            {
+                "numb": 11,
+                "question": "Đồng chí cho biết mục tiêu “Đời sống gia đình và phòng ngừa, ứng phó với bạo lực trên cơ sở giới”  là mục tiêu số mấy trong Kế hoạch hành động VSTBCPN trong Quân đội giai đoạn 2021-2025:",
+                "answer": "Mục tiêu 3.",
+                "options": [
+                    "Mục tiêu 1.",
+                    "Mục tiêu 2.",
+                    "Mục tiêu 3.",
+                    "Mục tiêu 4."
+                ]
+            },
+            {
+                "numb": 12,
+                "question": "Đồng chí cho biết trong Kế hoạch hành động vì sự tiến bộ phụ nữ trong Quân đội giai đoạn 2021-2025, mục tiêu 4 “Trong lĩnh vực y tế” xác định những chỉ tiêu nào dưới đây:",
+                "answer": "Tất cả đáp án A, B, C.",
+                "options": [
+                    "Tỷ số giới tính khi sinh dưới 109 bé trai/100 bé gái sinh ra sống.",
+                    "Nâng cao chất lượng chăm sóc sức khỏe, khám, chữa bệnh, 100% quân số được khám sức khỏe định kỳ và tăng tỷ lệ khám các bệnh chuyên khoa liên quan đến giới.",
+                    "100% phụ nữ có thai được khám thai theo định kỳ và quản lý thai sản, giảm tỷ lệ tử vong bà mẹ liên quan đến thai sản xuống dưới 42/100.000 trẻ sinh ra sống.",
+                    "Tất cả đáp án A, B, C."
+                ]
+            },
+            {
+                "numb": 13,
+                "question": "Đồng chí co biết phương châm hành động Đại hội đại biểu Phụ nữ Quân đội lần thứ VII là gì:",
+                "answer": "“Đoàn kết - Trí tuệ - Bản lĩnh - Dân chủ - Phát triển”.",
+                "options": [
+                    "“Đoàn kết - Trí tuệ - Bản lĩnh - Dân chủ - Phát triển”.",
+                    " “Đoàn kết - Trí tuệ - Bản lĩnh - Dân chủ - Sáng tạo”.",
+                    " “Đoàn kết - Linh hoạt - Bản lĩnh - Dân chủ - Phát triển”.",
+                    " “Đoàn kết - Trí tuệ - Kiên cường - Dân chủ - Phát triển”."
+                ]
+            },
+            {
+                "numb": 14,
+                "question": "Quy chế công tác phụ nữ trong QĐND Việt Nam quy định mối quan hệ công tác của hội phụ nữ trong QĐND Việt Nam với cấp ủy cùng cấp là:",
+                "answer": "Mối quan hệ giữa lãnh đạo và phục tùng.",
+                "options": [
+                    "Mối quan hệ giữa lãnh đạo và phục tùng.",
+                    "Mối quan hệ giữa chỉ đạo và phục tùng.",
+                    "Mối quan hệ phối hợp công tác.",
+                    "Cả 3 đáp án trên."
+                ]
+            },
+            {
+                "numb": 15,
+                "question": "Chỉ tiêu “100% hội viên phụ nữ tham gia học tập chương trình giáo dục chính trị; nâng cao kiến thức toàn diện về kinh tế, chính trị, văn hóa, xã hội, khoa học kỹ thuật, luật pháp, chính sách, đáp ứng yêu cầu nhiệm vụ quân sự, quốc phòng trong tình hình mới. Hằng năm, kiểm tra nhận thức chính trị, 100% đạt yêu cầu, trong đó có 70% trở lên đạt khá, giỏi” là chỉ tiêu thứ mấy trong Chương trình hành động 5 năm của Phụ nữ Quân đội (2021-2026):",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 2.",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 2.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 3.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 4.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 5."
+                ]
+            },
+            {
+                "numb": 16,
+                "question": "Chỉ tiêu “Phấn đấu đến năm 2026, có 25% cơ sở giáo dục mầm non đạt kiểm định chất lượng giáo dục và đạt chuẩn quốc gia mức độ 1 và mức độ 2; 60% - 65% cán bộ quản lý, giáo viên mầm non đạt chuẩn trình độ đào tạo” là chỉ tiêu thứ mấy trong Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026):",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 7.",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 3.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 5.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 6.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 7."
+                ]
+            },
+            {
+                "numb": 17,
+                "question": "Đồng chí cho biết nội dung “Sự dũng cảm, kiên cường, bất khuất, dám nghĩ dám làm, làm những gì mà bản thân có niềm tin đúng đắn, dám đối mặt với thực tế, không ngại thách thức và sẵn sàng chịu trách nhiệm” là tiêu chí nào trong tiêu chí xây dựng người phụ nữ Quân đội thời kỳ mới:",
+                "answer": "Bản lĩnh.",
+                "options": [
+                    "Trí tuệ.",
+                    "Bản lĩnh.",
+                    "Kỷ cương.",
+                    "Nhân ái."
+                ]
+            },
+            {
+                "numb": 18,
+                "question": "Nhiệm vụ “Hỗ trợ cán bộ, hội viên phát triển kinh tế gia đình\" và \"Xây dựng củng cố tổ chức Hội phụ nữ vững mạnh” là các nội dung nhiệm vụ thứ mấy trong Chương trình hành động 5 năm của Phụ nữ Quân đội (2021 - 2026):",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 5, 6.",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 1, 2.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 2, 3.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 3, 4.",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 5, 6."
+                ]
+            },
+            {
+                "numb": 19,
+                "question": "Đồng chí cho biết mục tiêu “Trong giáo dục, đào tạo”  là mục tiêu số mấy trong Kế hoạch hành động VSTBPN trong Quân đội giai đoạn 2021-2025:",
+                "answer": "Mục tiêu 5.",
+                "options": [
+                    "Mục tiêu 3.",
+                    "Mục tiêu 4.",
+                    "Mục tiêu 5.",
+                    "Mục tiêu 6."
+                ]
+            },
+            {
+                "numb": 20,
+                "question": "Đồng chí hãy cho biết tiêu chuẩn ủy viên BCH Hội phụ nữ trong Quân đội nhân dân Việt Nam:",
+                "answer": "Có lý lịch rõ ràng; Có bản lĩnh chính trị vững vàng, có phẩm chất, tư cách đạo đức tốt, trung thành với Tổ quốc, gương mẫu chấp hành các chủ trương, đường lối của Đảng, chính sách, pháp luật của Nhà nước, kỷ luật Quân đội; học tập và làm theo tư tưởng, đạo đức, phong cách Hồ Chí Minh; Có trình độ, năng lực và sức khỏe tốt để hoàn thành nhiệm vụ chuyên môn và nhiệm vụ của Hội; Tâm huyết, nhiệt tình với công tác Hội, được các hội viên phụ nữ trong đơn vị tín nhiệm.",
+                "options": [
+                    "Có lý lịch rõ ràng; Có bản lĩnh chính trị vững vàng, có phẩm chất, tư cách đạo đức tốt, trung thành với Tổ quốc, gương mẫu chấp hành các chủ trương, đường lối của Đảng, chính sách, pháp luật của Nhà nước, kỷ luật Quân đội; học tập và làm theo tư tưởng, đạo đức, phong cách Hồ Chí Minh.",
+                    "Có trình độ, năng lực và sức khỏe tốt để hoàn thành nhiệm vụ chuyên môn và nhiệm vụ của Hội.",
+                    "Có lý lịch rõ ràng; Có bản lĩnh chính trị vững vàng, có phẩm chất, tư cách đạo đức tốt, trung thành với Tổ quốc, gương mẫu chấp hành các chủ trương, đường lối của Đảng, chính sách, pháp luật của Nhà nước, kỷ luật Quân đội; học tập và làm theo tư tưởng, đạo đức, phong cách Hồ Chí Minh; Có trình độ, năng lực và sức khỏe tốt để hoàn thành nhiệm vụ chuyên môn và nhiệm vụ của Hội; Tâm huyết, nhiệt tình với công tác Hội, được các hội viên phụ nữ trong đơn vị tín nhiệm.",
+                    "Có trình độ, năng lực và sức khỏe tốt để hoàn thành nhiệm vụ chuyên môn và nhiệm vụ của Hội; Tâm huyết, nhiệt tình với công tác Hội, được các hội viên phụ nữ trong đơn vị tín nhiệm."
+                ]
+            },
+            {
+                "numb": 21,
+                "question": "Đồng chí cho biết thời gian sinh hoạt của Hội phụ nữ trong Quân đội:",
+                "answer": "Hội phụ nữ sinh hoạt định kỳ 3 tháng một lần; tổ chức sinh hoạt bất thường khi cần.",
+                "options": [
+                    "Hội phụ nữ sinh hoạt định kỳ 1 tháng một lần; tổ chức sinh hoạt bất thường khi cần.",
+                    "Hội phụ nữ sinh hoạt định kỳ 2 tháng một lần; tổ chức sinh hoạt bất thường khi cần.",
+                    "Hội phụ nữ sinh hoạt định kỳ 3 tháng một lần; tổ chức sinh hoạt bất thường khi cần.",
+                    "Hội phụ nữ sinh hoạt định kỳ 6 tháng một lần; tổ chức sinh hoạt bất thường khi cần."
+                ]
+            },
+            {
+                "numb": 22,
+                "question": "Nội dung “Hỗ trợ cán bộ, hội viên phát triển kinh tế gia đình” và “Xây dựng củng cố tổ chức Hội phụ nữ vững mạnh” là các nội dung nhiệm vụ thứ mấy trong Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026):",
+                "answer": "Nhiệm vụ 5 và 6",
+                "options": [
+                    "Nhiệm vụ 2 và 3",
+                    "Nhiệm vụ 3 và 4",
+                    "Nhiệm vụ 4 và 5",
+                    "Nhiệm vụ 5 và 6"
+                ]
+            },
+            {
+                "numb": 23,
+                "question": "Đồng chí hãy làm rõ chỉ tiêu 2, 3 trong Chương trình hành động của Phụ nữ Quân đội 5 năm (2021-2026):",
+                "answer": " 100% hội viên phụ nữ tham gia học tập chương trình giáo dục chính trị; nâng cao kiến thức toàn diện về kinh tế, chính trị, văn hóa, xã hội, khoa học kỹ thuật, luật pháp, chính sách, đáp ứng yêu cầu nhiệm vụ quân sự, quốc phòng trong tình hình mới. Hằng năm, kiểm tra nhận thức chính trị, 100% đạt yêu cầu, trong đó có 70% trở lên đạt khá, giỏi. (đ)",
+                "options": [
+                    " 100% hội viên phụ nữ tham gia học tập chương trình giáo dục chính trị; nâng cao kiến thức toàn diện về kinh tế, chính trị, văn hóa, xã hội, khoa học kỹ thuật, luật pháp, chính sách, đáp ứng yêu cầu nhiệm vụ quân sự, quốc phòng trong tình hình mới. Hằng năm, kiểm tra nhận thức chính trị, 100% đạt yêu cầu, trong đó có 70% trở lên đạt khá, giỏi. (đ)",
+                    " Duy trì và xây dựng mới, đảm bảo tăng số tổ, nhóm phụ nữ thực hành tiết kiệm và số gia đình hội viên được hỗ trợ vốn phát triển kinh tế gia đình; giảm số hội viên phụ nữ có hoàn cảnh khó khăn trong toàn quân xuống dưới 1,8%. ",
+                    " 98% tổ chức hội và hội viên hoàn thành nhiệm vụ trở lên, trong đó có từ 80% tổ chức hội và hội viên hoàn thành tốt, 20% hoàn thành xuất sắc nhiệm vụ. 100% cán bộ hội được bồi dưỡng kiến thức, kỹ năng hoạt động Hội. (đ)",
+                    "Duy trì và xây dựng mới, đảm bảo tăng số tổ, nhóm phụ nữ thực hành tiết kiệm và số gia đình hội viên được hỗ trợ vốn phát triển kinh tế gia đình; giảm số hội viên phụ nữ có hoàn cảnh khó khăn trong toàn quân xuống dưới 1,8%."
+                ]
+            },
+            {
+                "numb": 24,
+                "question": "Đồng chí cho biết nội dung \"100% cán bộ, hội viên được tuyên truyền kiến thức, kỹ năng xây dựng gia đình hạnh phúc ...” và “Phấn đấu đến năm 2026, tham mưu, đề xuất được từ 1 đến 2 chính sách đối với Phụ nữ Quân đội” là chỉ tiêu nào được xác định trong Chương trình hành động của Phụ nữ Quân đội 5 năm (2021-2026)?:",
+                "answer": "Chỉ tiêu 4 và 5",
+                "options": [
+                    "Chỉ tiêu 2 và 3",
+                    "Chỉ tiêu 3 và 5",
+                    "Chỉ tiêu 4 và 5",
+                    "Chỉ tiêu 4 và 6"
+                ]
+            },
+            {
+                "numb": 25,
+                "question": "Đồng chí cho biết nội dung chỉ tiêu 6 và chỉ tiêu 7 được xác định trong chương trình hành động của Phụ nữ Quân đội 5 năm (2021-2026):",
+                "answer": "Duy trì và xây dựng mới, đảm bảo tăng số tổ, nhóm phụ nữ thực hành tiết kiệm và số gia đình hội viên được hỗ trợ vốn phát triển kinh tế gia đình; giảm số hội viên phụ nữ có hoàn cảnh khó khăn trong toàn quân xuống dưới 1,8%. (đ)",
+                "options": [
+                    "Duy trì và xây dựng mới, đảm bảo tăng số tổ, nhóm phụ nữ thực hành tiết kiệm và số gia đình hội viên được hỗ trợ vốn phát triển kinh tế gia đình; giảm số hội viên phụ nữ có hoàn cảnh khó khăn trong toàn quân xuống dưới 1,8%. (đ)",
+                    "Phấn đấu đến năm 2026, có 35% cơ sở giáo dục mầm non đạt kiểm định chất lượng giáo dục và đạt chuẩn quốc gia mức độ 1 và mức độ 2; 65% - 70% cán bộ quản lý, giáo viên mầm non đạt chuẩn trình độ đào tạo.",
+                    "Duy trì và xây dựng mới, đảm bảo tăng số tổ, nhóm phụ nữ thực hành tiết kiệm và số gia đình hội viên được hỗ trợ vốn phát triển kinh tế gia đình; giảm số hội viên phụ nữ có hoàn cảnh khó khăn trong toàn quân xuống dưới 1,85%. ",
+                    "Phấn đấu đến năm 2026, có 25% cơ sở giáo dục mầm non đạt kiểm định chất lượng giáo dục và đạt chuẩn quốc gia mức độ 1 và mức độ 2; 60% - 65% cán bộ quản lý, giáo viên mầm non đạt chuẩn trình độ đào tạo. (đ)"
+                ]
+            },
+            {
+                "numb": 26,
+                "question": "Đồng chí cho biết nội dung cần phấn đấu, rèn luyện tiêu chí 1: Phụ nữ Quân đội trí tuệ - bản lĩnh",
+                "answer": "Cả 3 đáp án trên đều đúng",
+                "options": [
+                    "Có văn hóa, tri thức khoa học, trình độ quân sự, năng lực, phương pháp, tác phong công tác và sức khỏe đáp ứng yêu cầu nhiệm vụ. ",
+                    "Có bản lĩnh chính trị vững vàng, động cơ phấn đấu trong sáng, tinh thần trách nhiệm cao; có tinh thần đấu tranh tự phê bình và phê bình nghiêm túc.",
+                    "Có đạo đức, lối sống trong sạch, lành mạnh; thực sự cần, kiệm, liêm, chính, chí công vô tư.",
+                    "Cả 3 đáp án trên đều đúng"
+                ]
+            },
+            {
+                "numb": 27,
+                "question": "Đồng chí cho biết nội dung“Phụ nữ Quân đội trí tuệ - bản lĩnh” là tiêu chí thứ mấy trong phong trào thi đua của Phụ nữ Quân đội giai đoạn 2021-2026:",
+                "answer": "Tiêu chí 1",
+                "options": [
+                    "Tiêu chí 1",
+                    "Tiêu chí 2",
+                    "Tiêu chí 3",
+                    "Tiêu chí 4"
+                ]
+            },
+            {
+                "numb": 28,
+                "question": "Tiêu chí “Hoàn thành tốt nhiệm vụ” và “xây dựng gia đình hạnh phúc” là tiêu chí thứ mấy trong phong trào thi đua mà phụ nữ Quân đội triển khai trong giai đoạn 2021-2026:",
+                "answer": "Tiêu chí 2 và 3",
+                "options": [
+                    "Tiêu chí 1 và 2",
+                    "Tiêu chí 2 và 3",
+                    "Tiêu chí 2 và 4",
+                    "Tiêu chí 3 và 4"
+                ]
+            },
+            {
+                "numb": 29,
+                "question": "Đồng chí cho biết nội dung cần phấn đấu rèn luyện để đạt được tiêu chí 3 “Xây dựng gia đình hạnh phúc” được xác định trong phong trào thi đua của phụ nữ Quân đội triển khai giai đoạn 2021-2026:",
+                "answer": "Cả 3 đáp án trên đều đúng",
+                "options": [
+                    "Xây dựng gia đình no ấm, tiến bộ, hạnh phúc, văn minh",
+                    "Đạt các tiêu chí “5 không, 3 sạch”, “ 5 có, 3 sạch”",
+                    "Đạt danh hiệu gia đình văn hóa",
+                    "Cả 3 đáp án trên đều đúng"
+                ]
+            },
+            {
+                "numb": 30,
+                "question": "Đồng chí cho biết nội dung tiêu chí “Gia đình không bạo lực”:",
+                "answer": "Đáp án B, C",
+                "options": [
+                    "Mọi thành viên trong gia đình chấp hành chủ trương, đường lối của Đảng, chính sách, pháp luật của Nhà nước quy định của địa phương…",
+                    "Mọi thành viên trong gia đình yêu thương, tôn trọng lẫn nhau, cùng chia sẻ quyền lợi, nghĩa vụ, trách nhiệm (đ)",
+                    "Không có tình trạng bạo lực giữa các thành viên trong gia đình, được bản thân hộ gia đình và cộng đồng xung quanh cống nhận, đánh giá năm. (đ)",
+                    "Đáp án B, C"
+                ]
+            },
+            {
+                "numb": 31,
+                "question": "Đồng chí hãy làm rõ các chỉ tiêu trong mục tiêu 2 trong Kế hoạch hành động vì sự tiến bộ phụ nữ trong Quân đội giai đoạn 2021-2025:",
+                "answer": "Đáp án B, C",
+                "options": [
+                    "Tỷ lệ cán bộ nữ được quy hoạch các chức danh chỉ huy, quản lý so với tổng số cán bộ trong diện quy hoạch đạt từ 1,5% trở lên",
+                    "100% lao động nữ có đủ việc làm thường xuyên và được tham gia bảo hiểm xã hội theo quy định của pháp luật. ",
+                    "Đẩy mạnh các hoạt động hỗ trợ, giúp đỡ phụ nữ có hoàn cảnh khó khăn, phấn đấu giảm tỷ lệ phụ nữ có hoàn cảnh khó khăn trong toàn quân xuống dưới 1,8%.",
+                    "Đáp án B, C"
+                ]
+            },
+            {
+                "numb": 32,
+                "question": "Đồng chí cho biết mục tiêu “Đời sống gia đình và phòng ngừa, ứng phó với bạo lực trên cơ sở giới\" là mục tiêu số mấy trong Kế hoạch hành động vì sự tiến bộ phụ nữ trong Quân đội giai đoạn 2021-2025? Và mục tiêu đó có bao nhiêu chỉ tiêu:",
+                "answer": "Mục tiêu 3 và có 2 chỉ tiêu",
+                "options": [
+                    "Mục tiêu 2 và có 3 chỉ tiêu",
+                    "Mục tiêu 3 và có 2 chỉ tiêu",
+                    "Mục tiêu 3 và có 3 chỉ tiêu",
+                    "Mục tiêu 4 và có 2 chỉ tiêu"
+                ]
+            },
+            {
+                "numb": 33,
+                "question": "Đồng chí hãy làm rõ các nội dung chỉ tiêu của Mục tiêu 4 “Trong lĩnh vực y tế\" được xác định trong Kế hoạch hành động vì sự tiến bộ phụ nữ Quân đội giai đoạn 2021-2025:",
+                "answer": "Cả 3 đáp án trên đều đúng",
+                "options": [
+                    "Tỷ số giới tính khi sinh dưới 109 bé trai/100 bé gái sinh ra sống. ",
+                    "Nâng cao chất lượng chăm sóc sức khỏe, khám, chữa bệnh, 100% quân số được khám sức khỏe định kỳ và tăng tỷ lệ khám các bệnh chuyên khoa liên quan đến giới.",
+                    "100% phụ nữ có thai được khám thai theo định kỳ và quản lý thai sản, giảm tỷ lệ tử vong bà mẹ liên quan đến thai sản xuống dưới 42/100.000 trẻ sinh ra sống.",
+                    "Cả 3 đáp án trên đều đúng"
+                ]
+            },
+            {
+                "numb": 34,
+                "question": "Đồng chí cho biết nội dung Mục tiêu 5 của Kế hoạch hành động vì sự tiến bộ phụ nữ trong Quân đội giai đoạn 2021-2025? và mục tiêu có bao nhiêu chỉ tiêu:",
+                "answer": "Mục tiêu \"Giáo dục, đào tạo \" và có 4 chỉ tiêu",
+                "options": [
+                    "Mục tiêu “Trong lĩnh vực kinh tế và lao động” và có 3 chỉ tiêu",
+                    "Mục tiêu \"Giáo dục, đào tạo\" và có 3 chỉ tiêu",
+                    "Mục tiêu \"Giáo dục, đào tạo \" và có 4 chỉ tiêu",
+                    "Mục tiêu “ lĩnh vực thông tin và truyền thông” và có 3 chỉ tiêu"
+                ]
+            },
+            {
+                "numb": 35,
+                "question": "Đồng chí cho biết nội dung \"Hỗ trợ cán bộ, hội viên phát triển kinh tế gia đình\" và \"Xây dựng củng cố tổ chức HPN vững mạnh\" là các nội dung nhiệm vụ thứ mấy trong Chương trình hành động của Phụ nữ Quân đội 5 năm (2021-2026):",
+                "answer": "Nhiệm vụ 5 và 6",
+                "options": [
+                    "Nhiệm vụ 2 và 3",
+                    "Nhiệm vụ 3 và 5",
+                    "Nhiệm vụ 4 và 5",
+                    "Nhiệm vụ 5 và 6"
+                ]
+            },
+            {
+                "numb": 36,
+                "question": "Đồng chí cho biết Chương trình hành động của Phụ nữ Quân đội 5 năm (2021-2026) xác định có bao nhiêu chỉ tiêu? và nội dung “100% cán bộ, hội viên được tuyên truyền kiến thức, kỹ năng xây dựng gia đình hạnh phúc...\" là nội dung của chỉ tiêu thứ mấy:",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 4",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 chỉ tiêu, nội dung trên là chỉ tiêu 3",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 chỉ tiêu, nội dung trên là chỉ tiêu 4",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 3",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 4"
+                ]
+            },
+            {
+                "numb": 37,
+                "question": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) xác định có bao nhiêu chỉ tiêu. Nội dung chỉ tiêu “Duy trì và xây dựng mới, đảm bảo tăng số tổ, nhóm phụ nữ thực hành tiết kiệm và số gia đình hội viên được hỗ trợ vốn phát triển kinh tế gia đình; giảm số hội viên phụ nữ có hoàn cảnh khó khăn trong toàn quân xuống dưới 1,8%” là chỉ tiêu thứ mấy:",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 6",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 5",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 6",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 8 chỉ tiêu, nội dung trên là chỉ tiêu 5",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 8 chỉ tiêu, nội dung trên là chỉ tiêu 6"
+                ]
+            },
+            {
+                "numb": 38,
+                "question": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) xác định có bao nhiêu chỉ tiêu. Nội dung chỉ tiêu “Phấn đấu đến năm 2026, có 25% cơ sở giáo dục mầm non đạt kiểm định chất lượng giáo dục và đạt chuẩn quốc gia mức độ 1 và mức độ 2; 60% - 65% cán bộ quản lý, giáo viên mầm non đạt chuẩn trình độ đào tạo” là chỉ tiêu thứ mấy\":",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 7",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 chỉ tiêu, nội dung trên là chỉ tiêu 6",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 chỉ tiêu, nội dung trên là chỉ tiêu 7",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 6",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 7 chỉ tiêu, nội dung trên là chỉ tiêu 7"
+                ]
+            },
+            {
+                "numb": 39,
+                "question": "Đồng chí cho biết chương trình hành động 5 năm của Phụ nữ Quân đội (2021 - 2026) xác định có bao nhiêu nhiệm vụ. Nội dung “Hỗ trợ cán bộ, hội viên phát triển kinh tế gia đình\" là nội dung nhiệm vụ thứ mấy:",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 5",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 5 nhiệm vụ, các nội dung trên là nhiệm vụ 4",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 5 nhiệm vụ, các nội dung trên là nhiệm vụ 5",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 4",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 5"
+                ]
+            },
+            {
+                "numb": 40,
+                "question": "Đồng chí cho biết chương trình hành động 5 năm của Phụ nữ Quân đội (2021 - 2026) xác định có bao nhiêu nhiệm vụ. Nội dung “\"Xây dựng củng cố tổ chức Hội phụ nữ vững mạnh” là các nội dung nhiệm vụ thứ mấy?",
+                "answer": "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 6",
+                "options": [
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 5 nhiệm vụ, các nội dung trên là nhiệm vụ 5",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 5 nhiệm vụ, các nội dung trên là nhiệm vụ 6",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 5",
+                    "Chương trình hành động của Phụ nữ Quân đội 5 năm (2021 - 2026) đã xác định 6 nhiệm vụ, các nội dung trên là nhiệm vụ 6"
+                ]
+            },
+            {
+                "numb": 41,
+                "question": "Đồng chí hãy nêu các tiêu chí của Cuộc vận động “Xây dựng gia đình 5 không, 3 sạch”?",
+                "answer": "Gia đình không đói nghèo, gia đình không vi phạm pháp luật và tệ nạn xã hội, gia đình không bạo lực, gia đình không vi phạm chính sách dân số, gia đình không có con suy dinh dưỡng, bỏ học; sạch nhà, sạch bếp, sạch ngõ.",
+                "options": [
+                    "Gia đình không khổ; gia đình không vi phạm luật giao thông; gia đình không vi phạm chính sách dân số; gia đình không có con suy dinh dưỡng, bỏ học; sạch nhà, sạch bếp, sạch ngõ.",
+                    "Gia đình không đói nghèo, gia đình không vi phạm pháp luật và tệ nạn xã hội, gia đình không bạo lực, gia đình không vi phạm chính sách dân số, gia đình không có con suy dinh dưỡng, bỏ học; sạch nhà, sạch bếp, sạch ngõ.",
+                    "Gia đình không khổ; gia đình không vi phạm luật giao thông; gia đình không vi phạm chính sách dân số; gia đình không có con suy dinh dưỡng; sạch phòng, sạch nhà, sạch bếp.",
+                    "Gia đình không đói nghèo, gia đình không vi phạm pháp luật và tệ nạn xã hội, gia đình không bạo lực, gia đình không vi phạm chính sách dân số, gia đình không có con béo phì; sạch phòng, sạch bếp, sạch nhà."
+                ]
+            },
+            {
+                "numb": 42,
+                "question": "Đồng chí cho biết chương trình hành động của phụ nữ quân đội 5 năm 2021 - 2026 xác định bao nhiêu chỉ tiêu? nội dung \"100% tổ chức hội, hội viên đăng ký thực hiện phong trào thi đua \"Phụ nữ QĐ trí tuệ - bản lĩnh, hoàn thành tốt nhiệm vụ, xây dựng gia đình hạnh phúc, xứng danh bộ đội Cụ Hồ thời kỳ mới....\" là chỉ tiêu thứ mấy:",
+                "answer": "Phong trào thi đua của Phụ nữ QĐ 2021-2026 xác định 7 chỉ tiêu, các nội dung trên là chỉ tiêu 1",
+                "options": [
+                    "Phong trào thi đua của Phụ nữ QĐ 2021-2026 xác định 6 chỉ tiêu, các nội dung trên là chỉ tiêu 1",
+                    "Phong trào thi đua của Phụ nữ QĐ 2021-2026 xác định 6 chỉ tiêu, các nội dung trên là chỉ tiêu 2",
+                    "Phong trào thi đua của Phụ nữ QĐ 2021-2026 xác định 7 chỉ tiêu, các nội dung trên là chỉ tiêu 1",
+                    "Phong trào thi đua của Phụ nữ QĐ 2021-2026 xác định 7 chỉ tiêu, các nội dung trên là chỉ tiêu 2"
+                ]
+            },
+            {
+                "numb": 43,
+                "question": "Đồng chí cho biết nội dung của mục tiêu 6 trong Kế hoạch hành động VSTBCPN và BĐG trong QĐ giai đoạn 2021-2025, là mục tiêu nào",
+                "answer": "Trong lĩnh vực thông tin, truyền thông",
+                "options": [
+                    "Trong lĩnh vực chính trị",
+                    "Trong lĩnh vực kinh tế lao động.",
+                    "Trong lĩnh vực giáo dục, đào tạo.",
+                    "Trong lĩnh vực thông tin, truyền thông"
+                ]
+            },
+            {
+                "numb": 44,
+                "question": "Đồng chí cho biết tiêu chí xây dựng người phụ nữ QĐ thời kỳ mới được xác định trong chương trình hành động của phụ nữ QĐ 5 năm (2021-2026):",
+                "answer": "Trí tuệ, Bản lĩnh, kỷ cương, nhân ái",
+                "options": [
+                    "Bản lĩnh, trí tuệ, kỷ cương, nhân ái, xây dựng gia đình tốt",
+                    "Trí tuệ, Bản lĩnh, kỷ cương, nhân ái",
+                    "Bản lĩnh,trí tuệ, kỷ cương, xây dựng gia đình tốt",
+                    "Trí tuệ, bản lĩnh, kỷ cương, nhân ái,  xứng danh bộ độ Cụ Hồ"
+                ]
+            },
+            {
+                "numb": 45,
+                "question": "Đồng chí cho biết nội dung  tiêu chí “trí tuệ”  được xác định trong các tiêu chí xây dựng người phụ nữ QĐ thời kỳ mới giai đoạn 2021 - 2026 là tiêu chí thứ mấy ",
+                "answer": "Tiêu chí 1 ",
+                "options": [
+                    "Tiêu chí 1 ",
+                    "Tiêu chí 2 ",
+                    "Tiêu chí 5 ",
+                    "Tiêu chí 7 "
+                ]
+            },
+            {
+                "numb": 46,
+                "question": "Đồng chí cho biết Phong trào thi đua của Phụ nữ QĐ giai đoạn 2021-2026 xác định bao nhiêu chỉ tiêu? và chỉ tiêu: \"100% hội viên phụ nữ tham gia học tập chương trình giáo dục chính trị, nâng cao kiến thức toàn diện về kinh tế chính trị , văn hóa xã hội, khoa học kỹ thuật, luật pháp, chính sách, đáp ứng yêu cầu nhiệm vụ, quân sự, quốc phòng trong tình hình mới. Hằng năm kiểm tra nhận thức chính trị , 100% đạt yêu cầu, trong đó có 70% trở lên đạt khá giỏi là chỉ tiêu thứ mấy?",
+                "answer": "Phong trào thi đua của Phụ nữ QĐ giai đoạn 2021-2026 xác định 7 chỉ tiêu, các nội dung trên là chỉ tiêu 2",
+                "options": [
+                    "Phong trào thi đua của Phụ nữ QĐ giai đoạn 2021-2026 xác định 6 chỉ tiêu, các nội dung trên là chỉ tiêu 1",
+                    "Phong trào thi đua của Phụ nữ QĐ giai đoạn 2021-2026 xác định 6 chỉ tiêu, các nội dung trên là chỉ tiêu 2",
+                    "Phong trào thi đua của Phụ nữ QĐ giai đoạn 2021-2026 xác định 7 chỉ tiêu, các nội dung trên là chỉ tiêu 1",
+                    "Phong trào thi đua của Phụ nữ QĐ giai đoạn 2021-2026 xác định 7 chỉ tiêu, các nội dung trên là chỉ tiêu 2"
+                ]
+            },
+            {
+                "numb": 47,
+                "question": "Trong Chương trình hành động của phụ nữ QĐ 5 năm (2021-2026) đề ra nội dung \"98% tổ chức hội và hội viên hoàn thành tốt, 20% HTSXNV. 100% cán bộ hội được bồi dưỡng kiến thức, kỹ năng hoạt động hội là nội dung chỉ tiêu thứ mấy:",
+                "answer": "Chỉ tiêu 3",
+                "options": [
+                    "Chỉ tiêu 1",
+                    "Chỉ tiêu 2",
+                    "Chỉ tiêu 3",
+                    "Chỉ tiêu 4"
+                ]
+            },
+            {
+                "numb": 48,
+                "question": "Đồng chí cho biết mục tiêu \"Trong lĩnh vực y tế\" là mục tiêu số mấy trong Kế hoạch hành động VSTBPN và BĐG trong QĐ giai đoạn 2021-2025:",
+                "answer": "Mục tiêu 4",
+                "options": [
+                    "Mục tiêu 2",
+                    "Mục tiêu 3",
+                    "Mục tiêu 4",
+                    "Mục tiêu 5"
+                ]
+            },
+            {
+                "numb": 49,
+                "question": "Tăng cường sự lãnh đạo, chỉ đạo của cấp ủy, chính ủy (chính trị viên), chỉ huy, cơ quan chính trị, cán bộ chính trị các cấp trong công tác phụ nữ, phong trào phụ nữ và xây dựng tổ chức phụ nữ là nhiệm vụ thứ mấy trong Chương trình hành động của Phụ nữ QĐ 5 năm (2021-2026):",
+                "answer": "Nhiệm vụ 1.",
+                "options": [
+                    "Nhiệm vụ 1.",
+                    "Nhiệm vụ 2.",
+                    "Nhiệm vụ 3.",
+                    "Nhiệm vụ 4."
+                ]
+            },
+            {
+                "numb": 50,
+                "question": "Tập trung thực hiện hiệu quả 2 khâu đột phá Một là, đẩy mạnh ứng dụng công nghệ thông tin, nâng cao chất lượng hoạt động của tổ chức Hội phụ nữ. Hai là, nâng cao số lượng, chất lượng đội ngũ cán bộ nữ, phấn đấu tăng tỷ lệ phụ nữ tham gia lãnh đạo, quản lý trên các lĩnh vực phù hợp.là nhiệm vụ thứ mấy trong Chương trình hành động của Phụ nữ QĐ 5 năm (2021-2026):",
+                "answer": "Nhiệm vụ 2.",
+                "options": [
+                    "Nhiệm vụ 1.",
+                    "Nhiệm vụ 2.",
+                    "Nhiệm vụ 3.",
+                    "Nhiệm vụ 4."
+                ]
+            },
+            {
+                "numb": 51,
+                "question": "Nâng cao chất lượng công tác giáo dục chính trị, tư tưởng, xây dựng đội ngũ cán bộ, hội viên phát triển toàn diện, nâng cao bản lĩnh chính trị, chấp hành nghiêm pháp luật, kỷ luật, hoàn thành tốt nhiệm vụ là nhiệm vụ thứ mấy trong Chương trình hành động của Phụ nữ QĐ 5 năm (2021-2026):",
+                "answer": "Nhiệm vụ 3.",
+                "options": [
+                    "Nhiệm vụ 1.",
+                    "Nhiệm vụ 2.",
+                    "Nhiệm vụ 3.",
+                    "Nhiệm vụ 4."
+                ]
+            },
+            {
+                "numb": 52,
+                "question": "Chủ động, sáng tạo tổ chức thực hiện có hiệu quả phong trào thi đua Phụ nữ Quân đội trí tuệ - bản lĩnh, hoàn thành tốt nhiệm vụ, xây dựng gia đình hạnh phúc, xứng danh Bộ đội Cụ Hồ thời kỳ mới”, vận động cán bộ, hội viên rèn luyện, phấn đấu hướng tới xây dựng người phụ nữ Quân đội thời kỳ mới “Trí tuệ, bản lĩnh, kỷ cương, nhân ái”là nhiệm vụ thứ mấy trong Chương trình hành động của Phụ nữ QĐ 5 năm (2021-2026):",
+                "answer": "Nhiệm vụ 4.",
+                "options": [
+                    "Nhiệm vụ 1.",
+                    "Nhiệm vụ 2.",
+                    "Nhiệm vụ 3.",
+                    "Nhiệm vụ 4."
+                ]
+            },
+            {
+                "numb": 53,
+                "question": "Hỗ trợ cán bộ, hội viên phát triển kinh tế gia đình, vun đắp và phát huy giá trị tốt đẹp của gia đình Việt Nam, xây dựng gia đình hạnh phúc. Phát huy vai trò nòng cốt của cán bộ, hội viên PNQĐ trong giữ gìn và phát huy các giá trị tốt đẹp của gia đình Việt Nam, xây dựng gia đình hạnh phúc. Xây dựng củng cố tổ chức Hội phụ nữ vững mạnh, thực hiện có hiệu quả bình đẳng giới, tham gia xây dựng tổ chức đảng trong sạch vững mạnh tiêu biểu, cơ quan, đơn vị vững mạnh toàn diện, “mẫu mực, tiêu biểu”.là nhiệm vụ thứ mấy trong Chương trình hành động của Phụ nữ QĐ 5 năm (2021-2026):",
+                "answer": "Nhiệm vụ 5 và 6.",
+                "options": [
+                    "Nhiệm vụ 1và 2.",
+                    "Nhiệm vụ 2 và 3.",
+                    "Nhiệm vụ 3 và 4.",
+                    "Nhiệm vụ 5 và 6."
+                ]
+            },
+            {
+                "numb": 54,
+                "question": "Trong chương trình hành động của Phụ nữ QĐ 5 năm (2021 - 2026) xác định bao nhiêu chỉ tiêu? và chỉ tiêu: \"100% cán bộ, hội viên được tuyên truyền kiến thức, kỹ năng xây dựng gia đình hạnh phúc và thực hiện chính sách về dân số; tiếp tục thực hiện tốt cuộc vận động” \"xây dựng gia đình 5 không, 3 sạch”, trong đó 98% gia đình hội viên đạt các tiêu chí của cuộc \"Gia đình văn hóa”; mỗi đơn vị thành lập, duy trì ít nhất 01 câu lạc bộ hoạc 01 mô hình cụ thể, tích cực gìn giữ các giá trị tốt đẹp của gia đình Việt Nam, xây dựng gia đình hạnh phúc là chỉ tiêu thứ mấy:",
+                "answer": "Phong trào thi đua của Phụ nữ TCHC giai đoạn 2021 - 2026 xác định 7 chỉ tiêu, các nội dung trên là chỉ tiêu 4.",
+                "options": [
+                    "Phong trào thi đua của Phụ nữ TCHC giai đoạn 2021 - 2026 xác định 6 chỉ tiêu, các nội dung trên là chỉ tiêu 4.",
+                    "Phong trào thi đua của Phụ nữ TCHC giai đoạn 2021 - 2026 xác định 6 chỉ tiêu, các nội dung trên là chỉ tiêu 5.",
+                    "Phong trào thi đua của Phụ nữ TCHC giai đoạn 2021 - 2026 xác định 7 chỉ tiêu, các nội dung trên là chỉ tiêu 4.",
+                    "Phong trào thi đua của Phụ nữ TCHC giai đoạn 2021 - 2026 xác định 8 chỉ tiêu, các nội dung trên là chỉ tiêu 5."
+                ]
+            },
+            {
+                "numb": 55,
+                "question": "Đồng chí cho biết “xây dựng gia đình hạnh phúc” trong phong trào thi đua của Phụ nữ QĐ giai đoạn 2021 - 2026 là tiêu chí thứ mấy:",
+                "answer": "Tiêu chí 3",
+                "options": [
+                    "Tiêu chí 1.",
+                    "Tiêu chí 2  ",
+                    "Tiêu chí 3",
+                    "Tất cả đáp án A, B, C."
+                ]
+            },
+            {
+                "numb": 56,
+                "question": "Đồng chí cho biết nội dung \"Duy trì và xây dựng mới đảm bảo tăng số tổ, nhóm phụ nữ thực hành tiết kiệm và số gia đình hội viên đươck hỗ trợ vốn phát triển kinh tế gia đình; giảm số hội viên phụ nữ có hoàn cảnh khó khăn trong toàn quân xuống dưới 1,8% là chỉ tiêu số mấy trong chương trình hành động của phụ nữ QĐ 5 năm (2021-2026):",
+                "answer": "Chỉ tiêu 6",
+                "options": [
+                    "Chỉ tiêu 4",
+                    "Chỉ tiêu 5",
+                    "Chỉ tiêu 6",
+                    "Chỉ tiêu 7"
+                ]
+            },
+            {
+                "numb": 57,
+                "question": "Đồng chí cho biết chỉ tiêu \"Phấn đấu đến năm 2026, tham mưu, đề xuất được từ 1 đến 2 chính sách với phụ nữ QĐ; tỷ lệ cán bộ nữ trên tổng số cán bộ trong toàn quân đạt 2,5-3%; đối với cơ quan, đơn vị có 30% trở lên quân số là nữ, phấn đấu có từ 30% trở lên cơ quan, đơn vị đó có lãnh đạo, chỉ huy là nữ\";  “Phấn đấu đến năm 2026, có 25% cơ sở giáo dục mầm non đạt kiểm định chất lượng giáo dục và đạt chuẩn quốc gia mức độ 1 và mức độ 2; 60-65% cán bộ quản lý, giáo viên mầm non đạt chuẩn trình độ đào tạo”là nội dung của chỉ tiêu thứ mấy trong chương trình hành động phụ nữ QĐ 5 năm (2021-2026):",
+                "answer": "Chỉ tiêu 5 và 7",
+                "options": [
+                    "Chỉ tiêu 1 và 2",
+                    "Chỉ tiêu 5 và 7",
+                    "Chỉ tiêu 2 và 3",
+                    "Chỉ tiêu 2 và 4"
+                ]
+            },
+            {
+                "numb": 58,
+                "question": "Đồng chí cho biết các nội dung khâu đột phá được xác định trong chương trình hành động phụ nữ QĐ giai đoạn 2021-2026 là gì:",
+                "answer": "Đáp án B và C",
+                "options": [
+                    "Đổi mới phương pháp nâng cao chất lượng công tác giáo dục, truyền thông trong các tổ chức hội",
+                    "Đẩy mạnh ứng dụng công nghệ thông tin, nâng cao chất lượng hoạt động của tổ chức Hội phụ nữ.",
+                    "Nâng cao số lượng, chất lượng đội ngũ cán bộ nữ, phấn đấu tăng tỷ lệ phụ nữ tham gia lãnh đạo, quản lý trên các kĩnh vực phù hợp.",
+                    "Đáp án B và C"
+                ]
+            },
+            {
+                "numb": 59,
+                "question": "Đồng chí cho biết trong kế hoạch hành động VSTBPN và BĐG QĐ giai đoạn 2021-2025, xác định nội dung mục tiêu 1 là gì và có bao nhiêu chỉ tiêu:",
+                "answer": "Mục tiêu “Trong lĩnh vực chính trị” và có 5 chỉ tiêu",
+                "options": [
+                    "Mục tiêu “Trong lĩnh vực chính trị” và có 2 chỉ tiêu",
+                    "Mục tiêu “Trong lĩnh vực chính trị” và có 3 chỉ tiêu",
+                    "Mục tiêu “Trong lĩnh vực chính trị” và có 4 chỉ tiêu",
+                    "Mục tiêu “Trong lĩnh vực chính trị” và có 5 chỉ tiêu"
+                ]
+            },
+            {
+                "numb": 60,
+                "question": "Đồng chí cho biết nội dung chỉ tiêu 1 xác định ở mục tiêu 1 “Trong lĩnh vực chính trị” là gì:",
+                "answer": "Tỷ lệ cán bộ nữ trong toàn Tổng cục đạt từ 2,5%-3,0%",
+                "options": [
+                    "Tỷ lệ cán bộ nữ trong toàn Tổng cục đạt từ 1,5%-2,5%",
+                    "Tỷ lệ cán bộ nữ trong toàn Tổng cục đạt từ 2,0%-3,0%",
+                    "Tỷ lệ cán bộ nữ trong toàn Tổng cục đạt từ 2,5%-3,0%",
+                    "Tỷ lệ cán bộ nữ trong toàn Tổng cục đạt từ 2,5%-3,5%"
+                ]
+            },
+            {
+                "numb": 61,
+                "question": "Đồng chí cho tiêu chí xây dựng đội ngũ cán bộ hội “Ba giỏi” được xác định gồm những nội dung nào:",
+                "answer": "Đáp án A, B, C",
+                "options": [
+                    "Giỏi tham mưu, đề xuất",
+                    "Giỏi vận động tập hợp",
+                    "Giỏi triển khai thực hiện",
+                    "Đáp án A, B, C"
+                ]
+            },
+            {
+                "numb": 62,
+                "question": "Đồng chí cho biết nội dung mục tiêu 4 được xác định trong kế hoạch VSTBPN và BĐG TCHC giai đoạn 2021-2025? và gồm bao nhiêu chỉ tiêu:",
+                "answer": "“Trong lĩnh vực y tế” và 3 chỉ tiêu",
+                "options": [
+                    " “Trong đời sống gia đình và phòng ngừa, ứng phó với bạo lực trên cơ sở giới” và 2 chỉ tiêu",
+                    " “Trong đời sống gia đình và phòng ngừa, ứng phó với bạo lực trên cơ sở giới” và 3 chỉ tiêu",
+                    " “Trong lĩnh vực y tế” và 2 chỉ tiêu",
+                    "“Trong lĩnh vực y tế” và 3 chỉ tiêu"
+                ]
+            },
+            {
+                "numb": 63,
+                "question": "Đồng chí cho biết nội dung Mục tiêu 6 xác định trong kế hoạch VSTBPN và BĐG TCHC giai đoạn 2021-2025 và gì? và gồm mấy chỉ tiêu:",
+                "answer": "“Trong lĩnh vực truyền thông” và 3 chỉ tiêu",
+                "options": [
+                    " “Trong lĩnh vực truyền thông” và 2 chỉ tiêu",
+                    "“Trong lĩnh vực truyền thông” và 3 chỉ tiêu",
+                    " “Trong lĩnh vực truyền thông” và 4 chỉ tiêu",
+                    " “Trong lĩnh vực truyền thông” và 5 chỉ tiêu"
+                ]
+            },
+            {
+                "numb": 64,
+                "question": "Đồng chí cho biết nội dung tiêu chí \"Gia đình không bạo lực” trong cuộc vận động xây dựng gia đình 5 không, 3 sạch” được xác định như thế nào:",
+                "answer": "Đáp án A, B, C",
+                "options": [
+                    "Mọi thành viên trong gia đình yêu thương, tôn trọng lẫn nhau, cùng chia sẻ mọi quyền lợi, nghĩa vụ và trách nhiệm  ",
+                    "Không có tình trạng bạo lực giữa các thành viên trong gia đình (bạo lực về thể chất, tinh thần, kinh tế, tình dục…) hoạc hộ gia đình đã xảy ra bạo lực gia đình nhuwg không tái diễn hành vi bao lực",
+                    "được bản thân hộ gia đình và cộng đồng xung quanh công nhận, đánh giá trong năm.",
+                    "Đáp án A, B, C"
+                ]
+            },
+            {
+                "numb": 65,
+                "question": "Đồng chí cho biết nội dung tiêu chí \"Gia đình không có con suy dinh dưỡng, bỏ học” trong cuộc vận động xây dựng gia đình 5 không, 3 sạch” được xác định như thế nào:",
+                "answer": " đáp án A, B, C.",
+                "options": [
+                    " Trẻ em trong gia đình được chăm sóc đầy đủ, đảm bảo sự phát triển toàn diện về thể chất và trí tuệ; không bị thiếu các chất dinh dưỡng; đạt chuẩn cân nặng và chiều cao, thể béo phì theo lứa tuổi. ",
+                    " Cha mẹ, người lớn luôn quan tâm đến việc học tập của trẻ em, tạo điều kiện để trẻ được đi học đúng độ tuổi; không để trẻ bỏ học giữa chừng;",
+                    " dành thời gian hướng dẫn, động viên con/cháu học tập, thường xuyên liên hệ với nhà trường và thầy cô giáo để nắm rõ tình hình học tập của con/cháu. ",
+                    " đáp án A, B, C."
+                ]
+            },
+            {
+                "numb": 66,
+                "question": "Đồng chí cho biết Mục tiêu 5 trong Kế hoạch hành động vì sự tiến bộ của phụ nữ và bình đẳng giới trong QĐ giai đoạn 2021-2025 là mục tiêu nào dưới đây:",
+                "answer": "Trong giáo dục, đào tạo",
+                "options": [
+                    "Trong lĩnh vực kinh tế, lao động",
+                    "Trong lĩnh vực y tế",
+                    "Trong giáo dục, đào tạo",
+                    "Trong lĩnh vực thông tin, truyền thông"
+                ]
+            },
+            {
+                "numb": 67,
+                "question": "Đồng chí cho biết cuộc vận động xây dựng gia đình 5 có, 3 sạch” do trung ương HLHPNVN phát động đã xác đinh tiêu chí “Có ngôi nhà an toàn” như thế nào:",
+                "answer": "Đáp án A, B, C",
+                "options": [
+                    "Nhà ở đảm bảo an toàn đạt tiêu chuẩn 3 cứng theo quy định[1], Có phương tiện, điều kiện cơ sở vật chất gia đình dự phòng chủ động phòng chống tai nạn thương tích cho trẻ em, phòng chống thiên tai trong nhà theo đặc thù địa phương.",
+                    "Có môi trường sống an toàn để các cá nhân trong gia đình được sinh ra, nuôi dưỡng và trưởng thành; Các thành viên trong gia đình được yêu thương, chia sẻ, bình đẳng, tôn trọng, gắn kết và đảm bảo an toàn về tính mạng, thân thể, tinh thần, sức khỏe, an toàn trong gia đình và trong không gian mạng;",
+                    "không bạo lực, xâm hại về thể chất, tinh thần, kinh tế. Khuôn viên, cảnh quan, môi trường xanh - sạch - đẹp theo quy hoạch vườn mẫu nông thôn mới.",
+                    "Đáp án A, B, C"
+                ]
+            },
+            {
+                "numb": 68,
+                "question": "Nghị quyết Đại hội đại biểu Phụ nữ toàn quốc lần thứ XIII đã xác định những nhiệm vụ nào sau đây:",
+                "answer": "Tất cả đáp án A, B, C.",
+                "options": [
+                    "Hỗ trợ phụ nữ phát triển toàn diện, xây dựng gia đình Việt Nam ấm no, hạnh phúc, tiến bộ, văn minh.",
+                    "Tham gia xây dựng Đảng, hệ thống chính trị; chú trọng giám sát, phản biện xã hội; vận động xã hội thực hiện bình đẳng giới.",
+                    "Xây dựng tổ chức Hội vững mạnh, hoạt động chuyên nghiệp, hiệu quả; hội nhập quốc tế.",
+                    "Tất cả đáp án A, B, C."
+                ]
+            },
+            {
+                "numb": 69,
+                "question": "Đồng chí cho biết tên phong trào thi đua mà Nghị quyết Đại hội đại biểu Phụ nữ toàn quốc lần thứ XIII đã xác định:",
+                "answer": " “Xây dựng Phụ nữ Việt Nam thời đại mới” gắn với đẩy mạnh học tập và làm theo tư tưởng, đạo đức, Phong cách Hồ chí Minh.",
+                "options": [
+                    "Phụ nữ tích cực học tập, lao động sáng tạo, xây dựng gia đình hạnh phúc.",
+                    " “Xây dựng Phụ nữ Việt Nam thời đại mới”.",
+                    " “Xây dựng Phụ nữ Việt Nam thời đại mới” gắn với đẩy mạnh học tập và làm theo tư tưởng, đạo đức, Phong cách Hồ chí Minh.",
+                    "Xây dựng Phụ nữ Việt Nam có tri thức, có đạo đức, có sức khoẻ, có trách nhiệm với bản thân, gia đình, xã hội và đất nước”."
+                ]
+            },
+            {
+                "numb": 70,
+                "question": "Đồng chí cho biết tên Cuộc vận động mà Nghị quyết Đại hội đại biểu Phụ nữ toàn quốc lần thứ XIII đã xác định:",
+                "answer": " “Xây dựng gia đình 5 không, 3 sạch”.",
+                "options": [
+                    " “Xây dựng gia đình 5 có, 3 sạch”.",
+                    " “Xây dựng người Phụ nữ Việt Nam thời đại mới”.",
+                    " “Xây dựng gia đình 5 không, 3 sạch”.",
+                    "Tất cả đáp án A, B, C."
+                ]
+            },
+            {
+                "numb": 71,
+                "question": "Đồng chí cho biết khâu đột phá mà Nghị quyết Đại hội đại biểu Phụ nữ toàn quốc lần thứ XIII đã xác định:",
+                "answer": "cả đáp án A và B.",
+                "options": [
+                    "Đổi mới phương thức hoạt động Hội, trọng tâm là ứng dụng công nghệ thông tin.",
+                    "Tập trung xây dựng cơ sở Hội vững mạnh.",
+                    "Hỗ trợ phụ nữ phát triển kinh tế và khởi nghiệp sáng tạo.",
+                    "cả đáp án A và B."
+                ]
+            },
+            {
+                "numb": 72,
+                "question": "Ngày 22/3/1965, Ban Thường trực TW Hội LHPN Việt Nam đã ra Chỉ thị số 03/CT phát động phong trào “Ba đảm nhiệm” trong phụ nữ cả nước và sau này chính Chủ tịch Hồ Chí Minh đã đổi tên phong trào “Ba đảm nhiệm” thành tên phong trào nào sau đây:",
+                "answer": "“Ba đảm đang”.",
+                "options": [
+                    "“Ba đảm đang”.",
+                    " “Ba việc giỏi”.",
+                    " “Ba khéo tay”.",
+                    " “Ba chăm chỉ”."
+                ]
+            },
+            {
+                "numb": 73,
+                "question": "Đồng chí hãy cho biết những lời khuyên nào dưới đây là lời khuyên vàng của Tổ chức Y tế thế giới về vệ sinh an toàn thực phẩm:",
+                "answer": "Tất cả đáp án A, B, C.",
+                "options": [
+                    "Chọn thực phẩm an toàn; Nấu chín kỹ trước khi ăn; Ăn ngay sau khi nấu; Bảo quản cẩn thận thức ăn đã nấu chín; Nấu lại thức thật kỹ; Tránh ô nhiễm chéo giữa thức ăn chín và sống với bề mặt bẩn.",
+                    "Rửa tay sạch trước khi chế biến thức ăn và sau mỗi lần gián đoạn để làm việc khác; Giữ sạch các bề mặt chế biến thức ăn.",
+                    "Che đậy thực phẩm để tránh côn trùng và động vật khác; Sử dụng nguồn nước sạch an toàn.",
+                    "Tất cả đáp án A, B, C."
+                ]
+            },
+            {
+                "numb": 74,
+                "question": "Luật Phòng, chống bạo lực gia đình được Quốc hội thông qua vào ngày, tháng, năm nào và có hiệu lực từ ngày, tháng, năm nào:",
+                "answer": "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 2 thông qua ngày 21/11/2007. Luật có hiệu lực thi hành từ ngày 01/7/2008.",
+                "options": [
+                    "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 2 thông qua ngày 21/11/2007. Luật có hiệu lực thi hành từ ngày 01/7/2008.",
+                    "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 2 thông qua ngày 22/11/2007. Luật có hiệu lực thi hành từ ngày 02/7/2008.",
+                    "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 2 thông qua ngày 23/11/2007. Luật có hiệu lực thi hành từ ngày 03/7/2008.",
+                    "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 2 thông qua ngày 24/11/2007. Luật có hiệu lực thi hành từ ngày 04/7/2008."
+                ]
+            },
+            {
+                "numb": 75,
+                "question": "Mục tiêu tổng quát và chỉ tiêu cụ thể trong 5 năm (nhiệm kỳ 2022 -2027) được Đại hội Đại biểu Phụ nữ toàn quốc lần thứ XIII đề ra như thế nào:",
+                "answer": "Phát huy truyền thống, tinh thần đoàn kết, sáng tạo, chủ động hội nhập, ý thức làm chủ các tầng lớp phụ nữ; xây dựng tổ chức hội vững mạnh, tích cực xây dựng Đảng, xây dựng hệ thống chính trị, bảo vệ quyền lợi và lợi ích chính đáng của phụ nữ.",
+                "options": [
+                    "Phát huy truyền thống, tinh thần đoàn kết, sáng tạo, chủ động hội nhập, ý thức làm chủ các tầng lớp phụ nữ; xây dựng tổ chức hội vững mạnh, tích cực xây dựng Đảng, xây dựng hệ thống chính trị, bảo vệ quyền lợi và lợi ích chính đáng của phụ nữ.",
+                    "Phấn đấu đến năm 2023, kỷ niệm 100 năm thành lập Hội LHPN Việt Nam, khẳng định vị thế tổ chức tiền phong hành động vì hạnh phúc của phụ nữ, có tầm ảnh hưởng trong khu vực và quốc tế; góp phần thực hiện thắng lợi mục tiêu phát triển đất nước.",
+                    "Cả đáp án A và B đều sai.",
+                    "Cả đáp án A và B đều đúng."
+                ]
+            },
+            {
+                "numb": 76,
+                "question": "Điều kiện thành lập Hội phụ nữ cần phải có bao nhiêu hội viên phụ nữ trở lên mới được thành lập Hội:",
+                "answer": "Có từ 3 hội viên trở lên.",
+                "options": [
+                    "Có từ 3 hội viên trở lên.",
+                    "Có từ 4 hội viên trở lên.",
+                    "Có từ 5 hội viên trở lên.",
+                    "Có từ 6 hội viên trở lên."
+                ]
+            },
+            {
+                "numb": 77,
+                "question": "“Gia đình không vi phạm pháp luật và tệ nạn xã hội” và “Gia đình không vi phạm chính sách dân số” là tiêu chí thứ mấy của Cuộc vận động “Xây dựng gia đình 5 không, 3 sạch”?",
+                "answer": "Tiêu chí 2 và 4.",
+                "options": [
+                    "Tiêu chí 1 và  3.",
+                    "Tiêu chí 2 và 3.",
+                    "Tiêu chí 1 và 4.",
+                    "Tiêu chí 2 và 4."
+                ]
+            },
+            {
+                "numb": 78,
+                "question": "“Nấu chín kỹ trước khi ăn” và “Sử dụng nguồn nước sạch, an toàn” là lời khuyên thứ mấy trong “10 lời khuyên vàng” của tổ chức y tế thế giới về vệ sinh an toàn thực phẩm:",
+                "answer": "Lời khuyên 2 và 10",
+                "options": [
+                    "Lời khuyên 1 và 5",
+                    "Lời khuyên 2 và 6",
+                    "Lời khuyên 4 và 10",
+                    "Lời khuyên 2 và 10"
+                ]
+            },
+            {
+                "numb": 79,
+                "question": "Hình thức kỷ luật đối với tổ chức Hội, gồm những hình thức kỷ luật nào:",
+                "answer": "Khiển trách, cảnh cáo, giải thể.",
+                "options": [
+                    "Khiển trách, cảnh cáo:",
+                    "Khiển trách, cảnh cáo, giải thể.",
+                    "Khiển trách, cảnh cáo, thôi công nhận.",
+                    "Khiển trách, cảnh cáo, cách chức hoặc thôi đảm nhiệm chức danh."
+                ]
+            },
+            {
+                "numb": 80,
+                "question": "Đồng chí cho biết tiền thân của Hội liên hiệp phụ nữ Việt Nam là:",
+                "answer": "Hội Phụ nữ phản đế Việt Nam.",
+                "options": [
+                    "Hội Liên hiệp Nữ giới Đông Dương.",
+                    "Hội Liên hiệp Nữ giới miền Bắc.",
+                    "Hội Phụ nữ phản đế Việt Nam.",
+                    "Hội Nữ du kích Việt Nam."
+                ]
+            },
+            {
+                "numb": 81,
+                "question": "Đồng chí hãy nêu nội dung của Phong trào “Ba đảm đang”:",
+                "answer": "Cả 3 đáp án trên đều đúng",
+                "options": [
+                    "Đảm nhiệm (đảm đang) sản xuất và công tác thay thế cho nam giới đi chiến đấu; ",
+                    "Đảm nhiệm (đảm đang) công việc gia đình, khuyến khích chồng con yên tâm chiến đấu; ",
+                    "Đảm nhiệm (đảm đang) phục vụ chiến đấu và sẵn sàng chiến đấu khi cần thiết",
+                    "Cả 3 đáp án trên đều đúng"
+                ]
+            },
+            {
+                "numb": 82,
+                "question": "Luật Bình đẳng giới được Quốc hội thông qua vào ngày, tháng, năm nào và có hiệu lực từ ngày, tháng, năm nào:",
+                "answer": "Luật Bình đẳng giới được Quốc hội khóa XI thông qua tại kỳ họp thứ 10, ngày 29 tháng 11 năm 2006. Luật có hiệu lực thi hành từ ngày 01/7/2007.",
+                "options": [
+                    "Luật Bình đẳng giới được Quốc hội khóa XI thông qua tại kỳ họp thứ 10, ngày 27 tháng 11 năm 2006. Luật có hiệu lực thi hành từ ngày 29/6/2007.",
+                    "Luật Bình đẳng giới được Quốc hội khóa XI thông qua tại kỳ họp thứ 10, ngày 28 tháng 11 năm 2006. Luật có hiệu lực thi hành từ ngày 30/6/2007.",
+                    "Luật Bình đẳng giới được Quốc hội khóa XI thông qua tại kỳ họp thứ 10, ngày 29 tháng 11 năm 2006. Luật có hiệu lực thi hành từ ngày 01/7/2007.",
+                    "Luật Bình đẳng giới được Quốc hội khóa XI thông qua tại kỳ họp thứ 10, ngày 30 tháng 11 năm 2006. Luật có hiệu lực thi hành từ ngày 02/7/2007."
+                ]
+            },
+            {
+                "numb": 83,
+                "question": "Đồng chí cho biết Nghị quyết Đại hội đại biểu phụ nữ toàn quốc lần thứ XIII đã xác định mấy nhiệm vụ, nội dung nhiệm vụ thứ 3 là gì:",
+                "answer": "3 nhiệm vụ. Nhiệm vụ 3: Xây dựng tổ chức Hội vững mạnh, hoạt động chuyên nghiệp, hiệu quả; hội nhập quốc tế.",
+                "options": [
+                    "3 nhiệm vụ. Nhiệm vụ 3: Xây dựng tổ chức Hội vững mạnh, hoạt động chuyên nghiệp, hiệu quả; hội nhập quốc tế.",
+                    "4 nhiệm vụ. Nhiệm vụ 3: Xây dựng tổ chức Hội vững mạnh, hoạt động chuyên nghiệp, hiệu quả; hội nhập quốc tế.",
+                    "4 nhiệm vụ. Nhiệm vụ 3: Tham gia xây dựng Đảng, hệ thống chính trị; chú trọng giám sát, phản biện xã hội; vận động xã hội thực hiện bình đẳng giới.",
+                    "5 nhiệm vụ. Nhiệm vụ 3: Tham gia xây dựng Đảng, hệ thống chính trị; vận động xã hội thực hiện bình đẳng giới."
+                ]
+            },
+            {
+                "numb": 84,
+                "question": "Luật Phòng, chống bạo lực gia đình có hiệu lực từ ngày, tháng, năm nào? Đồng chí hiểu như thế nào về ý nghĩa của Luật và các vấn đề liên quan đến Phụ nữ trong quá trình thực hiện Luật:",
+                "answer": "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 2 thông qua ngày 21/11/2007. Luật có hiệu lực thi hành từ ngày 01/7/2008.",
+                "options": [
+                    "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 2 thông qua ngày 21/10/2007. Luật có hiệu lực thi hành từ ngày 01/6/2008.",
+                    "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 2 thông qua ngày 21/11/2007. Luật có hiệu lực thi hành từ ngày 01/7/2008.",
+                    "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 3 thông qua ngày 20/10/2007. Luật có hiệu lực thi hành từ ngày 01/8/2008.",
+                    "Luật Phòng, chống bạo lực gia đình được Quốc hội khóa XII, kỳ họp thứ 5 thông qua ngày 20/11/2007. Luật có hiệu lực thi hành từ ngày 01/7/2008."
+                ]
+            },
+            {
+                "numb": 85,
+                "question": "Đồng chí cho biết tên phong trào thi đua và khâu đột phá mà Nghị quyết ĐH đại biểu phụ nữ toàn quốc lần thứ XIII đã xác định:",
+                "answer": "đáp án A, B",
+                "options": [
+                    "Phong trào thi đua \"Xây dựng người phụ nữ Việt Nam thời đại mới\" ",
+                    "Hai khâu đột phá \"Đổi mới phương thức hoạt động của Hội, trọng tâm là ứng dụng công nghệ thông tin\", \"Tập trung xây dựng cơ sở Hội vững mạnh\"",
+                    "Phong trào thi đua \"Xây dựng người phụ nữ Việt Nam thời kỳ mới\" ",
+                    "đáp án A, B"
+                ]
+            },
+            {
+                "numb": 86,
+                "question": "Đồng chí cho biết Nghị quyết Đại hội đại biểu phụ nữ toàn quốc lần thứ XIII đã xác định mấy nhiệm vụ, nội dung nhiệm vụ thứ 2 là gì: ",
+                "answer": "3 nhiệm vụ. Nhiệm vụ 2: Tham gia xây dựng Đảng, hệ thống chính trị; chú trọng giám sát, phản biện xã hội; vận động xã hội thực hiện bình đẳng giới.",
+                "options": [
+                    "2 nhiệm vụ. Nhiệm vụ 2: Hỗ trợ phụ nữ phát triển toàn diện, xây dựng gia đình Việt Nam ấm no, hạnh phúc, tiến bộ, văn minh.",
+                    "3 nhiệm vụ. Nhiệm vụ 2: Tham gia xây dựng Đảng, hệ thống chính trị; chú trọng giám sát, phản biện xã hội; vận động xã hội thực hiện bình đẳng giới.",
+                    "4 nhiệm vụ. Nhiệm vụ 2: Hỗ trợ phụ nữ phát triển toàn diện, xây dựng gia đình Việt Nam ấm no, hạnh phúc, tiến bộ, văn minh.",
+                    "5 nhiệm vụ. Nhiệm vụ 2: Tham gia xây dựng Đảng, hệ thống chính trị; chú trọng giám sát, phản biện xã hội; vận động xã hội thực hiện bình đẳng giới."
+                ]
+            },
+            {
+                "numb": 87,
+                "question": "Đồng chí cho biết Nghị quyết Đại hội đại biểu phụ nữ toàn quốc lần thứ XIII đã xác định mấy nhiệm vụ, nội dung nhiệm vụ thứ 1 là gì:",
+                "answer": "3 nhiệm vụ; Nhiệm vụ 1: Hỗ trợ phụ nữ phát triển toàn diện, xây dựng gia đình Việt Nam ấm no, hạnh phúc, tiến bộ, văn minh.",
+                "options": [
+                    "2 nhiệm vụ. Nhiệm vụ 1: Hỗ trợ phụ nữ phát triển toàn diện, xây dựng gia đình Việt Nam ấm no, hạnh phúc, tiến bộ, văn minh.",
+                    "3 nhiệm vụ; Nhiệm vụ 1: Hỗ trợ phụ nữ phát triển toàn diện, xây dựng gia đình Việt Nam ấm no, hạnh phúc, tiến bộ, văn minh.",
+                    "2 nhiệm vụ. Nhiệm vụ 1: Tham gia xây dựng Đảng, hệ thống chính trị; chú trọng giám sát, phản biện xã hội; vận động xã hội thực hiện bình đẳng giới.",
+                    "3 nhiệm vụ. Nhiệm vụ 1: Tham gia xây dựng Đảng, hệ thống chính trị; chú trọng giám sát, phản biện xã hội; vận động xã hội thực hiện bình đẳng giới."
+                ]
+            },
+            {
+                "numb": 88,
+                "question": "Đồng chí hãy nêu các tiêu chí của Cuộc vận động “Xây dựng gia đình 5 có, 3 sạch”:",
+                "answer": "Có ngôi nhà an toàn; có sinh kế bền vững; có sức khỏe; có kiến thức; có nếp sống văn hóa; sạch nhà, sạch bếp, sạch ngõ.",
+                "options": [
+                    "Có tiền tích luỹ; có sinh kế bền vững; có sức khỏe; có trí tuệ; có nếp sống văn hóa; sạch phòng, sạch nhà, sạch bếp.",
+                    "Có tiền tích luỹ; có công việc ổn định; có sức khỏe; có năng lực; có nếp sống văn hóa; sạch phòng, sạch nhà, sạch bếp.",
+                    "Có ngôi nhà an toàn; có sinh kế bền vững; có sức khỏe; có kiến thức; có nếp sống văn hóa; sạch nhà, sạch bếp, sạch ngõ.",
+                    "Có ngôi nhà an toàn; có sinh kế bền vững; có sức khỏe; có năng lực; có cuộc sống văn minh; sạch nhà, sạch bếp, sạch ngõ."
+                ]
+            },
+            {
+                "numb": 89,
+                "question": "Đồng chí hãy nêu các tiêu chí của Cuộc vận động “Xây dựng gia đình 5 không 3 sạch”:",
+                "answer": "Gia đình không đói nghèo, gia đình không vi phạm pháp luật và tệ nạn xã hội, gia đình không bạo lực, gia đình không vi phạm chính sách dân số, gia đình không có con suy dinh dưỡng, bỏ học; sạch nhà, sạch bếp, sạch ngõ.",
+                "options": [
+                    "Gia đình không khổ; gia đình không vi phạm luật giao thông; gia đình không vi phạm chính sách dân số; gia đình không có con suy dinh dưỡng, bỏ học; sạch nhà, sạch bếp, sạch ngõ.",
+                    "Gia đình không đói nghèo, gia đình không vi phạm pháp luật và tệ nạn xã hội, gia đình không bạo lực, gia đình không vi phạm chính sách dân số, gia đình không có con suy dinh dưỡng, bỏ học; sạch nhà, sạch bếp, sạch ngõ.",
+                    "Gia đình không khổ; gia đình không vi phạm luật giao thông; gia đình không vi phạm chính sách dân số; gia đình không có con suy dinh dưỡng; sạch phòng, sạch nhà, sạch bếp.",
+                    "Gia đình không đói nghèo, gia đình không vi phạm pháp luật và tệ nạn xã hội, gia đình không bạo lực, gia đình không vi phạm chính sách dân số, gia đình không có con béo phì; sạch phòng, sạch bếp, sạch nhà."
+                ]
+            },
+            {
+                "numb": 90,
+                "question": "Đồng chí cho biết Đại hội đại biểu phụ nữ toàn quốc lần thứ XIII nhiệm kỳ (2022 -2027) đã xác định mấy nhiệm vụ trọng tâm? 03 nhiệm vụ cụ thể như sau:",
+                "answer": " Đáp án A, B, C",
+                "options": [
+                    "Hỗ trợ phụ nữ phát triển toàn diện, xây dựng gia đình Việt Nam ấm no, hạnh phúc, tiến bộ, văn minh.",
+                    "Tham gia xây dựng Đảng, hệ thống chính trị; chú trọng giám sát, phản biện xã hội; vận động xã hội thực hiện bình đẳng giới.",
+                    "Xây dựng tổ chức Hội vững mạnh, hoạt động chuyên nghiệp, hiệu quả; hội nhập quốc tế.",
+                    " Đáp án A, B, C"
+                ]
+            },
+            {
+                "numb": 91,
+                "question": "Đồng chí cho biết Phong trào thi đua của Phụ nữ Quân đội giai đoạn (2021-2026) xác định có mấy tiêu chí? 3 tiêu chí ",
+                "answer": " Đáp án A, B, C",
+                "options": [
+                    "Phụ nữ Quân đội trí tuệ - bản lĩnh",
+                    "Hoàn thành tốt nhiệm vụ",
+                    "Xây dựng gia đình hạnh phúc",
+                    " Đáp án A, B, C"
+                ]
+            },
+            {
+                "numb": 92,
+                "question": "Đồng chí cho biết Nội dung cần phấn đấu, rèn luyện Tiêu chí 1: Phụ nữ Quân đội trí tuệ - bản lĩnh",
+                "answer": " Đáp án A, B, C",
+                "options": [
+                    "Có văn hóa, tri thức khoa học, trình độ quân sự, năng lực, phương pháp, tác phong công tác và sức khỏe đáp ứng yêu cầu nhiệm vụ. ",
+                    "Có bản lĩnh chính trị vững vàng, động cơ phấn đấu trong sáng, tinh thần trách nhiệm cao; có tinh thần đấu tranh tự phê bình và phê bình nghiêm túc.",
+                    "Có đạo đức, lối sống trong sạch, lành mạnh; thực sự cần, kiệm, liêm, chính, chí công vô tư.",
+                    " Đáp án A, B, C"
+                ]
+            },
+            {
+                "numb": 93,
+                "question": "Đồng chí cho biết Hội phụ nữ trong Quân đội nhân dân Việt Nam có bao nhiêu mối quan hệ công tác theo Quy chế Công tác phụ nữ trong Quân đội nhân dân Việt Nam năm 2018? (5)",
+                "answer": " 5 mối quan hệ công tác (A, B, C)",
+                "options": [
+                    "Với cấp ủy (chi bộ) cùng cấp là quan hệ giữa lãnh đạo và phục tùng. Với chính ủy (chính trị viên, bí thư cấp ủy), người chỉ huy và cơ quan chính trị cùng cấp là quan hệ giữa chỉ đạo và phục tùng. Với các tổ chức quần chúng và Hội đồng quân nhân là quan hệ phối hợp công tác",
+                    " Với Hội Liên hiệp phụ nữ địa phương, Hội phụ nữ các đơn vị lực lượng vũ trang trên địa bàn đóng quân là quan hệ phối hợp công tác ",
+                    " Hội phụ nữ cơ quan bộ chỉ huy quân sự, Bộ chỉ huy bộ đội biên phòng tỉnh (thành phố) tiếp nhận sự hướng dẫn về nội dung, nghiệp vụ công tác Hội phụ nữ; phối hợp ",
+                    " 5 mối quan hệ công tác (A, B, C)"
+                ]
+            },
+            {
+                "numb": 94,
+                "question": "Đồng chí cho biết Theo Quy chế Công tác phụ nữ trong Quân đội nhân dân Việt Nam năm 2018, điều kiện thành lập, giải thể của Hội phụ nữ trong Quân đội được quy định như thế nào?",
+                "answer": " Tất cả các đáp án",
+                "options": [
+                    "Hội phụ nữ trong Quân đội chỉ tổ chức ở đơn vị cơ sở. Những đơn vị có từ 3 hội viên trở lên được thành lập Hội phụ nữ. Căn cứ vào cơ cấu tổ chức, nhiệm vụ của đơn vị, số lượng hội viên để thành lập Hội phụ nữ 1 cấp, 2 cấp hoặc 3 cấp cho phù hợp. <br>Hội phụ nữ 1 cấp: Hội phụ nữ không có chi hội và tổ phụ nữ.<br>Hội phụ nữ 2 cấp gồm: Hội phụ nữ và tổ phụ nữ.<br>Hội phụ nữ 3 cấp gồm: Hội phụ nữ, chi hội phụ nữ và tổ phụ nữ.",
+                    "Việc thành lập, giải thể Hội phụ nữ do cơ quan chính trị đơn vị cơ sở đề nghị, cấp ủy cơ sở quyết định, sau đó báo cáo cơ quan chính trị cấp trên trực tiếp.",
+                    "Chế độ sinh hoạt Hội phụ nữ sinh hoạt định kỳ 3 tháng một lần; tổ chức sinh hoạt bất thường khi cần.",
+                    " Tất cả các đáp án"
+                ]
+            },
+            {
+                "numb": 95,
+                "question": "Đồng chí cho biết Khái niệm Bình đẳng giới được quy định tại Khoản 3 Điều 5 Luật Bình đẳng giới được Quốc hội khóa XI thông qua ngày 29/11/2006 là gì?",
+                "answer": " Tất cả các đáp án",
+                "options": [
+                    "Bình đẳng giới “là việc nam, nữ có vị trí, vai trò ngang nhau, được tạo điều kiện và cơ hội phát huy năng lực của mình cho sự phát triển của cộng đồng, của gia đình và thụ hưởng như nhau về thành quả của sự phát triển đó” (Khoản 3 Điều 5 Luật Bình đẳng giới). Theo đó, các đặc điểm giống và khác nhau giữa phụ nữ và nam giới được thừa nhận và coi trọng như nhau. Nam giới và phụ nữ cùng có vị thế bình đẳng và được tôn trọng như nhau. Phụ nữ và nam giới cùng:",
+                    "Có điều kiện bình đẳng để phát huy hết khả năng và thực hiện các mong muốn của mình. Có cơ hội bình đẳng để tham gia, đóng góp và thụ hưởng từ các nguồn lực của xã hội và quá trình phát triển.",
+                    " Được hưởng tự do và chất lượng cuộc sống bình đẳng. Được hưởng thành quả bình đẳng trong mọi lĩnh vực của xã hội.",
+                    " Tất cả các đáp án"
+                ]
+            }
+        ];
+        genRandomQuestion();
+        function genRandomQuestion() {
+            // Used like so
+            shuffle(questions_full);
+            questions = questions_full.slice(0, 20);
+            console.log(questions);
+        }
+
+        function genFullQuestion() {
+            // Used like so
+            questions = questions_full;
+            console.log(questions);
+        }
+
+        function shuffle(array) {
+            let currentIndex = array.length,  randomIndex;
+
+            // While there remain elements to shuffle.
+            while (currentIndex > 0) {
+
+                // Pick a remaining element.
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+
+                // And swap it with the current element.
+                [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]];
+            }
+
+            return array;
+        }
+
+
+
+
+
+    </script>
+</body>
+</html>
